@@ -1,0 +1,11 @@
+{
+  "team_number": "T0024",
+  "group_lead": { "name": "Aditya Singla", "enrollment_no": "2501010031", "github": "https://github.com/ExplorInfinity" },
+  "members": [
+    { "name": "Adarsh Balu", "enrollment_no": "2501010640", "github": "https://github.com/Adarsh-0704" },
+    { "name": "Pratikk Pradhan", "enrollment_no": "2501010630", "github": "https://github.com/Dopamino-create" },
+    { "name": "Ramit Layek", "enrollment_no": "2501010727", "github": "https://github.com/ramitl25727-cyber" }
+  ],
+  "postgres_version": "",
+  "laptop_used_for_benchmarks": ""
+}

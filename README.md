@@ -22,12 +22,12 @@
 
 | Role | Name | Enrollment No. | GitHub Username |
 |------|------|----------------|-----------------|
-| Group Lead | | | |
-| Member 2 | | | |
-| Member 3 | | | |
-| Member 4 | | | |
+| Group Lead | Aditya Singla | 2501010031 | ExplorInfinity |
+| Member 2 | Adarsh Balu | 2501010640 | Adarsh-0704 |
+| Member 3 | Pratikk Pradhan | 2501010630 | Dopamino-create |
+| Member 4 | Ramit Layek | 2501010727 | ramitl25727-cyber |
 
-**Team No.:** ____ · **Section:** ____ · **Repository URL:** ____
+**Team No.:** T0024 · **Section:** E · **Repository URL:** https://github.com/ExplorInfinity/DE_Project_2026.git
 
 ---
 
