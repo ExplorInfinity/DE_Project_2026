@@ -94,3 +94,124 @@ CREATE TABLE Media (
         REFERENCES Users(user_id)
         ON DELETE SET NULL
 );
+
+CREATE TYPE call_type AS ENUM ('VOICE', 'VIDEO');
+CREATE TYPE call_status AS ENUM ('COMPLETED', 'FAILED', 'MISSED', 'REJECTED');
+CREATE TYPE message_type AS ENUM ('AUDIO', 'DOCUMENT', 'IMAGE', 'LOCATION', 'TEXT', 'VIDEO');
+
+
+CREATE TABLE Blocked_users(
+    blocker_id      INTEGER PRIMARY KEY NOT NULL,
+    blocked_id,     INTEGER PRIMARY KEY NOT NULL,
+    blocked_at      TIMESTAMPTZ NOT NULL
+
+    CONSTRAINT check_no_self_block
+        CHECK (blocked_id <> blocker_id),
+    CONSTRAINT fk_blocker
+        FOREIGN KEY (blocker_id)
+        REFERENCES Users(user_id)
+        ON DELETE CASCADE
+    CONSTRAINT fk_blocked
+        FOREIGN KEY (blocked_id)
+        REFERENCES Users(user_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Calls(
+    call_id         INTEGER PRIMARY KEY NOT NULL,
+    chat_id         INTEGER NOT NULL,
+    caller_id       INTEGER NOT NULL,
+    call_type       call_type NOT NULL,
+    started_at      TIMESTAMPTZ NOT NULL,
+    answered_at     TIMESTAMPTZ,
+    ended_at        TIMESTAMPTZ,
+    status          call_status NOT NULL,
+
+    CONSTRAINT chk_call_timestamps
+        CHECK(
+            (answered_at is NULL OR answered_at>=started_at)
+            AND
+            (ended_at is NULL OR ended_at>=started_at)
+            AND
+            (answered_at IS NULL OR ended_at IS NULL OR ended_at >= answered_at)
+        ),
+    CONSTRAINT chk_call_status_timestamps
+        CHECK (
+            (status = 'COMPLETED' AND answered_at IS NOT NULL AND ended_at IS NOT NULL)
+            OR
+            (status = 'FAILED' AND answered_at IS NULL AND ended_at IS NULL)
+            OR
+            (status IN ('MISSED', 'REJECTED') AND answered_at IS NULL AND ended_at IS NOT NULL)
+        ),
+    CONSTRAINT fk_calls_chat
+        FOREIGN KEY (chat_id)
+        REFERENCES Chats(chat_id)
+        ON DELETE CASCADE,
+   CONSTRAINT fk_calls_caller
+        FOREIGN KEY (caller_id)
+        REFERENCES Users(user_id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE Messages (
+    message_id           INTEGER PRIMARY KEY,
+    chat_id              INTEGER NOT NULL,
+    sender_id            INTEGER NOT NULL,
+    sent_at              TIMESTAMPTZ NOT NULL,
+    message_type         message_type NOT NULL,
+    body                 TEXT,
+    media_id             INTEGER,
+    reply_to_message_id  INTEGER,
+    is_forwarded         BOOLEAN NOT NULL,
+    is_deleted           BOOLEAN NOT NULL,
+    edited_at            TIMESTAMPTZ,
+
+    CONSTRAINT chk_edited_at
+        CHECK (edited_at IS NULL OR edited_at >= sent_at),
+
+    CONSTRAINT fk_messages_chat
+        FOREIGN KEY (chat_id)
+        REFERENCES Chats(chat_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_messages_sender
+        FOREIGN KEY (sender_id)
+        REFERENCES Users(user_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_messages_media
+        FOREIGN KEY (media_id)
+        REFERENCES Media(media_id)
+        ON DELETE SET NULL,
+
+    CONSTRAINT fk_messages_reply
+        FOREIGN KEY (reply_to_message_id)
+        REFERENCES Messages(message_id)
+        ON DELETE SET NULL
+);
+
+CREATE TABLE Message_receipts (
+    message_id    INTEGER NOT NULL,
+    user_id       INTEGER NOT NULL,
+    delivered_at  TIMESTAMPTZ,
+    read_at       TIMESTAMPTZ,
+
+    PRIMARY KEY (message_id, user_id),
+
+    CONSTRAINT chk_receipt_timestamps
+        CHECK (
+            (delivered_at IS NOT NULL OR read_at IS NULL)
+            AND
+            (read_at IS NULL OR read_at >= delivered_at)
+        ),
+
+    CONSTRAINT fk_receipts_message
+        FOREIGN KEY (message_id)
+        REFERENCES Messages(message_id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_receipts_user
+        FOREIGN KEY (user_id)
+        REFERENCES Users(user_id)
+        ON DELETE CASCADE
+);
