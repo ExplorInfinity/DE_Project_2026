@@ -1,0 +1,57 @@
+=== R12 run 1 ===
+Sort  (cost=2738.95..2743.82 rows=1949 width=16) (actual time=7.402..7.403 rows=3.00 loops=1)
+  Sort Key: (count(*)) DESC, sender_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=1302
+  ->  HashAggregate  (cost=2554.48..2632.45 rows=1949 width=16) (actual time=7.112..7.394 rows=3.00 loops=1)
+        Group Key: sender_id, (sent_at)::date
+        Filter: (count(*) >= 2)
+        Batches: 1  Memory Usage: 409kB
+        Rows Removed by Filter: 5992
+        Buffers: shared hit=1296
+        ->  Seq Scan on messages  (cost=0.00..2510.62 rows=5848 width=8) (actual time=0.008..6.284 rows=5998.00 loops=1)
+              Filter: is_forwarded
+              Rows Removed by Filter: 114002
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=109
+Planning Time: 0.167 ms
+Execution Time: 7.460 ms
+=== R12 run 2 ===
+Sort  (cost=2738.95..2743.82 rows=1949 width=16) (actual time=8.154..8.155 rows=3.00 loops=1)
+  Sort Key: (count(*)) DESC, sender_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=1302
+  ->  HashAggregate  (cost=2554.48..2632.45 rows=1949 width=16) (actual time=7.868..8.145 rows=3.00 loops=1)
+        Group Key: sender_id, (sent_at)::date
+        Filter: (count(*) >= 2)
+        Batches: 1  Memory Usage: 409kB
+        Rows Removed by Filter: 5992
+        Buffers: shared hit=1296
+        ->  Seq Scan on messages  (cost=0.00..2510.62 rows=5848 width=8) (actual time=0.008..6.971 rows=5998.00 loops=1)
+              Filter: is_forwarded
+              Rows Removed by Filter: 114002
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=109
+Planning Time: 0.156 ms
+Execution Time: 8.230 ms
+=== R12 run 3 ===
+Sort  (cost=2738.95..2743.82 rows=1949 width=16) (actual time=9.255..9.256 rows=3.00 loops=1)
+  Sort Key: (count(*)) DESC, sender_id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=1302
+  ->  HashAggregate  (cost=2554.48..2632.45 rows=1949 width=16) (actual time=9.100..9.233 rows=3.00 loops=1)
+        Group Key: sender_id, (sent_at)::date
+        Filter: (count(*) >= 2)
+        Batches: 1  Memory Usage: 409kB
+        Rows Removed by Filter: 5992
+        Buffers: shared hit=1296
+        ->  Seq Scan on messages  (cost=0.00..2510.62 rows=5848 width=8) (actual time=0.030..8.086 rows=5998.00 loops=1)
+              Filter: is_forwarded
+              Rows Removed by Filter: 114002
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=109
+Planning Time: 0.546 ms
+Execution Time: 9.351 ms
