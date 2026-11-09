@@ -1,0 +1,101 @@
+erDiagram
+    USERS {
+        int user_id PK
+        varchar phone_e164 UK
+        text display_name
+        text about
+        boolean is_business
+        date joined_on
+        timestamptz last_seen_at
+        user_status status
+    }
+
+    DEVICES {
+        int device_id PK
+        int user_id FK
+        device_type device_type
+        text app_version
+        timestamptz registered_at
+        timestamptz last_active_at
+    }
+
+    CHATS {
+        int chat_id PK
+        chat_type chat_type
+        text group_name
+        int created_by FK
+        timestamptz created_at
+    }
+
+    CHAT_MEMBERS {
+        int chat_id PK, FK
+        int user_id PK, FK
+        member_role role
+        timestamptz joined_at
+        timestamptz left_at
+        boolean is_muted
+    }
+
+    MEDIA {
+        int media_id PK
+        int uploader_id FK
+        media_type media_type
+        mime_type mime_type
+        bigint size_bytes
+        char sha256
+        timestamptz uploaded_at
+    }
+
+    MESSAGES {
+        int message_id PK
+        int chat_id FK
+        int sender_id FK
+        timestamptz sent_at
+        message_type message_type
+        text body
+        int media_id FK
+        int reply_to_message_id FK
+        boolean is_forwarded
+        boolean is_deleted
+        timestamptz edited_at
+    }
+
+    MESSAGE_RECEIPTS {
+        int message_id PK, FK
+        int user_id PK, FK
+        timestamptz delivered_at
+        timestamptz read_at
+    }
+
+    CALLS {
+        int call_id PK
+        int chat_id FK
+        int caller_id FK
+        call_type call_type
+        timestamptz started_at
+        timestamptz answered_at
+        timestamptz ended_at
+        call_status status
+    }
+
+    BLOCKED_USERS {
+        int blocker_id PK, FK
+        int blocked_id PK, FK
+        timestamptz blocked_at
+    }
+
+    USERS ||--o{ DEVICES : owns
+    USERS ||--o{ CHATS : creates
+    USERS ||--o{ CHAT_MEMBERS : joins
+    CHATS ||--o{ CHAT_MEMBERS : contains
+    USERS ||--o{ MEDIA : uploads
+    USERS ||--o{ MESSAGES : sends
+    CHATS ||--o{ MESSAGES : contains
+    MEDIA o|--o{ MESSAGES : attaches
+    MESSAGES o|--o{ MESSAGES : replies_to
+    MESSAGES ||--o{ MESSAGE_RECEIPTS : has
+    USERS ||--o{ MESSAGE_RECEIPTS : receives
+    CHATS ||--o{ CALLS : contains
+    USERS ||--o{ CALLS : starts
+    USERS ||--o{ BLOCKED_USERS : blocks
+    USERS ||--o{ BLOCKED_USERS : is_blocked
