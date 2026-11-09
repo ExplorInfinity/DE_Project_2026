@@ -1,0 +1,81 @@
+=== R19 run 1 ===
+Sort  (cost=17676741.26..17676748.76 rows=3000 width=36) (actual time=14454.967..14455.044 rows=3000.00 loops=1)
+  Sort Key: ((SubPlan 1)) DESC NULLS LAST
+  Sort Method: quicksort  Memory: 262kB
+  Buffers: shared hit=7776156
+  ->  Seq Scan on chats c  (cost=0.00..17676568.00 rows=3000 width=36) (actual time=7.946..14454.526 rows=3000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 20000
+        Buffers: shared hit=7776153
+        SubPlan 1
+          ->  Aggregate  (cost=2796.02..2796.03 rows=1 width=8) (actual time=2.307..2.307 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m  (cost=0.00..2796.00 rows=8 width=8) (actual time=0.096..2.306 rows=24.04 loops=3000)
+                      Filter: (chat_id = c.chat_id)
+                      Rows Removed by Filter: 119976
+                      Buffers: shared hit=3888000
+        SubPlan 2
+          ->  Aggregate  (cost=3096.00..3096.01 rows=1 width=8) (actual time=2.510..2.510 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m_1  (cost=0.00..3096.00 rows=1 width=0) (actual time=2.439..2.509 rows=1.33 loops=3000)
+                      Filter: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (chat_id = c.chat_id))
+                      Rows Removed by Filter: 119999
+                      Buffers: shared hit=3888000
+Planning:
+  Buffers: shared hit=121
+Planning Time: 0.257 ms
+Execution Time: 14455.484 ms
+=== R19 run 2 ===
+Sort  (cost=17676741.26..17676748.76 rows=3000 width=36) (actual time=14583.732..14583.810 rows=3000.00 loops=1)
+  Sort Key: ((SubPlan 1)) DESC NULLS LAST
+  Sort Method: quicksort  Memory: 262kB
+  Buffers: shared hit=7776156
+  ->  Seq Scan on chats c  (cost=0.00..17676568.00 rows=3000 width=36) (actual time=6.736..14583.253 rows=3000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 20000
+        Buffers: shared hit=7776153
+        SubPlan 1
+          ->  Aggregate  (cost=2796.02..2796.03 rows=1 width=8) (actual time=2.326..2.326 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m  (cost=0.00..2796.00 rows=8 width=8) (actual time=0.097..2.324 rows=24.04 loops=3000)
+                      Filter: (chat_id = c.chat_id)
+                      Rows Removed by Filter: 119976
+                      Buffers: shared hit=3888000
+        SubPlan 2
+          ->  Aggregate  (cost=3096.00..3096.01 rows=1 width=8) (actual time=2.535..2.535 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m_1  (cost=0.00..3096.00 rows=1 width=0) (actual time=2.463..2.533 rows=1.33 loops=3000)
+                      Filter: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (chat_id = c.chat_id))
+                      Rows Removed by Filter: 119999
+                      Buffers: shared hit=3888000
+Planning:
+  Buffers: shared hit=121
+Planning Time: 0.292 ms
+Execution Time: 14583.903 ms
+=== R19 run 3 ===
+Sort  (cost=17676741.26..17676748.76 rows=3000 width=36) (actual time=14656.420..14656.493 rows=3000.00 loops=1)
+  Sort Key: ((SubPlan 1)) DESC NULLS LAST
+  Sort Method: quicksort  Memory: 262kB
+  Buffers: shared hit=7776156
+  ->  Seq Scan on chats c  (cost=0.00..17676568.00 rows=3000 width=36) (actual time=6.638..14655.938 rows=3000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 20000
+        Buffers: shared hit=7776153
+        SubPlan 1
+          ->  Aggregate  (cost=2796.02..2796.03 rows=1 width=8) (actual time=2.338..2.338 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m  (cost=0.00..2796.00 rows=8 width=8) (actual time=0.097..2.336 rows=24.04 loops=3000)
+                      Filter: (chat_id = c.chat_id)
+                      Rows Removed by Filter: 119976
+                      Buffers: shared hit=3888000
+        SubPlan 2
+          ->  Aggregate  (cost=3096.00..3096.01 rows=1 width=8) (actual time=2.546..2.547 rows=1.00 loops=3000)
+                Buffers: shared hit=3888000
+                ->  Seq Scan on messages m_1  (cost=0.00..3096.00 rows=1 width=0) (actual time=2.474..2.545 rows=1.33 loops=3000)
+                      Filter: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (chat_id = c.chat_id))
+                      Rows Removed by Filter: 119999
+                      Buffers: shared hit=3888000
+Planning:
+  Buffers: shared hit=121
+Planning Time: 0.291 ms
+Execution Time: 14656.592 ms

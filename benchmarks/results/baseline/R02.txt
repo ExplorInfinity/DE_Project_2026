@@ -1,0 +1,45 @@
+=== R02 run 1 ===
+Limit  (cost=2796.12..2796.14 rows=8 width=44) (actual time=3.659..3.662 rows=34.00 loops=1)
+  Buffers: shared hit=1299
+  ->  Sort  (cost=2796.12..2796.14 rows=8 width=44) (actual time=3.658..3.659 rows=34.00 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1299
+        ->  Seq Scan on messages  (cost=0.00..2796.00 rows=8 width=44) (actual time=0.044..3.645 rows=34.00 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=94
+Planning Time: 0.165 ms
+Execution Time: 3.690 ms
+=== R02 run 2 ===
+Limit  (cost=2796.12..2796.14 rows=8 width=44) (actual time=4.568..4.571 rows=34.00 loops=1)
+  Buffers: shared hit=1299
+  ->  Sort  (cost=2796.12..2796.14 rows=8 width=44) (actual time=4.567..4.568 rows=34.00 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1299
+        ->  Seq Scan on messages  (cost=0.00..2796.00 rows=8 width=44) (actual time=0.027..4.554 rows=34.00 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=94
+Planning Time: 0.146 ms
+Execution Time: 4.586 ms
+=== R02 run 3 ===
+Limit  (cost=2796.12..2796.14 rows=8 width=44) (actual time=5.412..5.417 rows=34.00 loops=1)
+  Buffers: shared hit=1299
+  ->  Sort  (cost=2796.12..2796.14 rows=8 width=44) (actual time=5.412..5.413 rows=34.00 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1299
+        ->  Seq Scan on messages  (cost=0.00..2796.00 rows=8 width=44) (actual time=0.027..5.398 rows=34.00 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1296
+Planning:
+  Buffers: shared hit=94
+Planning Time: 0.153 ms
+Execution Time: 5.433 ms
