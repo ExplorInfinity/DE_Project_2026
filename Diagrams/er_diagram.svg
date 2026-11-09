@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1160" viewBox="0 0 1600 1160" role="img" aria-labelledby="title desc">
+  <title id="title">WhatsApp Messaging Database ER Diagram</title>
+  <desc id="desc">Entities, primary keys, foreign keys, and relationships for the WhatsApp messaging database.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+    <style>
+      .title { font: 700 28px Arial, sans-serif; fill: #0f172a; }
+      .entity { fill: #ffffff; stroke: #2563eb; stroke-width: 2; rx: 10; }
+      .head { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+      .name { font: 700 16px Arial, sans-serif; fill: #1e3a8a; }
+      .field { font: 13px 'SFMono-Regular', Consolas, monospace; fill: #1e293b; }
+      .edge { stroke: #64748b; stroke-width: 1.8; fill: none; marker-end: url(#arrow); }
+      .label { font: 12px Arial, sans-serif; fill: #475569; paint-order: stroke; stroke: #f8fafc; stroke-width: 4px; stroke-linejoin: round; }
+      .legend { font: 13px Arial, sans-serif; fill: #475569; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1160" fill="#f8fafc"/>
+  <text x="800" y="38" text-anchor="middle" class="title">WhatsApp Messaging Database ER Diagram</text>
+
+  <!-- relationships behind entities -->
+  <path class="edge" d="M370 145 C405 145 415 145 450 145"/>
+  <text x="392" y="133" class="label">owns</text>
+  <path class="edge" d="M370 210 C520 210 680 150 840 150"/>
+  <text x="585" y="187" class="label">creates</text>
+  <path class="edge" d="M205 300 C270 390 560 420 840 405"/>
+  <text x="480" y="387" class="label">joins</text>
+  <path class="edge" d="M1005 230 L1005 320"/>
+  <text x="1020" y="278" class="label">contains</text>
+  <path class="edge" d="M205 300 C205 350 205 390 205 430"/>
+  <text x="220" y="370" class="label">uploads</text>
+  <path class="edge" d="M370 240 C410 330 430 430 450 535"/>
+  <text x="385" y="390" class="label">sends</text>
+  <path class="edge" d="M840 205 C730 300 700 400 650 430"/>
+  <text x="720" y="325" class="label">contains</text>
+  <path class="edge" d="M370 520 C400 520 420 520 450 520"/>
+  <text x="388" y="507" class="label">attaches</text>
+  <path class="edge" d="M810 565 C850 565 870 565 900 565"/>
+  <text x="835" y="552" class="label">has</text>
+  <path class="edge" d="M370 280 C620 650 870 700 900 700"/>
+  <text x="610" y="685" class="label">receives</text>
+  <path class="edge" d="M1005 510 C1005 485 1005 455 1005 430"/>
+  <text x="1020" y="475" class="label">contains</text>
+  <path class="edge" d="M370 275 C400 760 210 790 205 850"/>
+  <text x="240" y="758" class="label">starts</text>
+  <path class="edge" d="M370 270 C470 830 520 900 560 920"/>
+  <text x="410" y="850" class="label">blocks</text>
+  <path class="edge" d="M370 275 C610 850 700 920 810 920"/>
+  <text x="630" y="875" class="label">is blocked</text>
+
+  <!-- entities -->
+  <g transform="translate(40,70)">
+    <rect class="entity" width="330" height="235"/>
+    <rect class="head" width="330" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="330" height="13"/>
+    <text class="name" x="165" y="25" text-anchor="middle">USERS</text>
+    <text class="field" x="15" y="62">PK user_id : INTEGER</text>
+    <text class="field" x="15" y="83">UK phone_e164 : VARCHAR(13)</text>
+    <text class="field" x="15" y="104">display_name : TEXT</text>
+    <text class="field" x="15" y="125">about : TEXT</text>
+    <text class="field" x="15" y="146">is_business : BOOLEAN</text>
+    <text class="field" x="15" y="167">joined_on : DATE</text>
+    <text class="field" x="15" y="188">last_seen_at : TIMESTAMPTZ</text>
+    <text class="field" x="15" y="209">status : user_status</text>
+  </g>
+
+  <g transform="translate(450,70)">
+    <rect class="entity" width="300" height="170"/>
+    <rect class="head" width="300" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="300" height="13"/>
+    <text class="name" x="150" y="25" text-anchor="middle">DEVICES</text>
+    <text class="field" x="15" y="62">PK device_id : INTEGER</text>
+    <text class="field" x="15" y="83">FK user_id : INTEGER</text>
+    <text class="field" x="15" y="104">device_type : device_type</text>
+    <text class="field" x="15" y="125">app_version : TEXT</text>
+    <text class="field" x="15" y="146">registered_at / last_active_at</text>
+  </g>
+
+  <g transform="translate(840,70)">
+    <rect class="entity" width="330" height="190"/>
+    <rect class="head" width="330" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="330" height="13"/>
+    <text class="name" x="165" y="25" text-anchor="middle">CHATS</text>
+    <text class="field" x="15" y="62">PK chat_id : INTEGER</text>
+    <text class="field" x="15" y="83">chat_type : chat_type</text>
+    <text class="field" x="15" y="104">group_name : TEXT</text>
+    <text class="field" x="15" y="125">FK created_by : INTEGER</text>
+    <text class="field" x="15" y="146">created_at : TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(840,320)">
+    <rect class="entity" width="350" height="190"/>
+    <rect class="head" width="350" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="350" height="13"/>
+    <text class="name" x="175" y="25" text-anchor="middle">CHAT_MEMBERS</text>
+    <text class="field" x="15" y="62">PK/FK chat_id : INTEGER</text>
+    <text class="field" x="15" y="83">PK/FK user_id : INTEGER</text>
+    <text class="field" x="15" y="104">role : member_role</text>
+    <text class="field" x="15" y="125">joined_at : TIMESTAMPTZ</text>
+    <text class="field" x="15" y="146">left_at : TIMESTAMPTZ</text>
+    <text class="field" x="15" y="167">is_muted : BOOLEAN</text>
+  </g>
+
+  <g transform="translate(40,430)">
+    <rect class="entity" width="330" height="205"/>
+    <rect class="head" width="330" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="330" height="13"/>
+    <text class="name" x="165" y="25" text-anchor="middle">MEDIA</text>
+    <text class="field" x="15" y="62">PK media_id : INTEGER</text>
+    <text class="field" x="15" y="83">FK uploader_id : INTEGER</text>
+    <text class="field" x="15" y="104">media_type / mime_type</text>
+    <text class="field" x="15" y="125">size_bytes : BIGINT</text>
+    <text class="field" x="15" y="146">sha256 : CHAR(64)</text>
+    <text class="field" x="15" y="167">uploaded_at : TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(450,430)">
+    <rect class="entity" width="360" height="270"/>
+    <rect class="head" width="360" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="360" height="13"/>
+    <text class="name" x="180" y="25" text-anchor="middle">MESSAGES</text>
+    <text class="field" x="15" y="62">PK message_id : INTEGER</text>
+    <text class="field" x="15" y="83">FK chat_id / sender_id</text>
+    <text class="field" x="15" y="104">sent_at : TIMESTAMPTZ</text>
+    <text class="field" x="15" y="125">message_type : message_type</text>
+    <text class="field" x="15" y="146">body : TEXT</text>
+    <text class="field" x="15" y="167">FK media_id : INTEGER</text>
+    <text class="field" x="15" y="188">FK reply_to_message_id</text>
+    <text class="field" x="15" y="209">is_forwarded / is_deleted</text>
+    <text class="field" x="15" y="230">edited_at : TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(900,565)">
+    <rect class="entity" width="380" height="165"/>
+    <rect class="head" width="380" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="380" height="13"/>
+    <text class="name" x="190" y="25" text-anchor="middle">MESSAGE_RECEIPTS</text>
+    <text class="field" x="15" y="62">PK/FK message_id : INTEGER</text>
+    <text class="field" x="15" y="83">PK/FK user_id : INTEGER</text>
+    <text class="field" x="15" y="104">delivered_at : TIMESTAMPTZ</text>
+    <text class="field" x="15" y="125">read_at : TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(40,850)">
+    <rect class="entity" width="330" height="165"/>
+    <rect class="head" width="330" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="330" height="13"/>
+    <text class="name" x="165" y="25" text-anchor="middle">CALLS</text>
+    <text class="field" x="15" y="62">PK call_id : INTEGER</text>
+    <text class="field" x="15" y="83">FK chat_id / caller_id</text>
+    <text class="field" x="15" y="104">call_type / status</text>
+    <text class="field" x="15" y="125">started_at / answered_at</text>
+    <text class="field" x="15" y="146">ended_at : TIMESTAMPTZ</text>
+  </g>
+
+  <g transform="translate(500,850)">
+    <rect class="entity" width="360" height="145"/>
+    <rect class="head" width="360" height="38" rx="10"/>
+    <rect fill="#dbeafe" x="0" y="25" width="360" height="13"/>
+    <text class="name" x="180" y="25" text-anchor="middle">BLOCKED_USERS</text>
+    <text class="field" x="15" y="62">PK/FK blocker_id : INTEGER</text>
+    <text class="field" x="15" y="83">PK/FK blocked_id : INTEGER</text>
+    <text class="field" x="15" y="104">blocked_at : TIMESTAMPTZ</text>
+  </g>
+
+  <text x="40" y="1100" class="legend">PK = primary key   FK = foreign key   UK = unique key   Nullable relationships are shown with open circles.</text>
+</svg>
