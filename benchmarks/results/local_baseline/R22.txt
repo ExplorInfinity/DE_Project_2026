@@ -1,0 +1,45 @@
+=== R22 run 1 ===
+Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.991..7.993 rows=25 loops=1)
+  Buffers: shared hit=1639
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.007..6.248 rows=100025 loops=1)
+        Buffers: shared hit=1639
+Planning:
+  Buffers: shared hit=73
+Planning Time: 0.132 ms
+Execution Time: 8.007 ms
+=== R22 run 2 ===
+Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.872..7.874 rows=25 loops=1)
+  Buffers: shared hit=1639
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.131 rows=100025 loops=1)
+        Buffers: shared hit=1639
+Planning:
+  Buffers: shared hit=73
+Planning Time: 0.134 ms
+Execution Time: 7.889 ms
+=== R22 run 3 ===
+Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.936..7.938 rows=25 loops=1)
+  Buffers: shared hit=1639
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.213 rows=100025 loops=1)
+        Buffers: shared hit=1639
+Planning:
+  Buffers: shared hit=73
+Planning Time: 0.123 ms
+Execution Time: 7.951 ms
+=== R22 run 4 ===
+Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.763..7.766 rows=25 loops=1)
+  Buffers: shared hit=1639
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.049 rows=100025 loops=1)
+        Buffers: shared hit=1639
+Planning:
+  Buffers: shared hit=73
+Planning Time: 0.123 ms
+Execution Time: 7.779 ms
+=== R22 run 5 ===
+Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.812..7.814 rows=25 loops=1)
+  Buffers: shared hit=1639
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.113 rows=100025 loops=1)
+        Buffers: shared hit=1639
+Planning:
+  Buffers: shared hit=73
+Planning Time: 0.118 ms
+Execution Time: 7.827 ms

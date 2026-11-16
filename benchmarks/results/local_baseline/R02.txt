@@ -1,0 +1,75 @@
+=== R02 run 1 ===
+Limit  (cost=2792.48..2792.61 rows=50 width=44) (actual time=3.534..3.537 rows=34 loops=1)
+  Buffers: shared hit=1294
+  ->  Sort  (cost=2792.48..2792.61 rows=52 width=44) (actual time=3.532..3.533 rows=34 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..2791.00 rows=52 width=44) (actual time=0.040..3.520 rows=34 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.183 ms
+Execution Time: 3.552 ms
+=== R02 run 2 ===
+Limit  (cost=2792.48..2792.61 rows=50 width=44) (actual time=3.253..3.255 rows=34 loops=1)
+  Buffers: shared hit=1294
+  ->  Sort  (cost=2792.48..2792.61 rows=52 width=44) (actual time=3.251..3.252 rows=34 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..2791.00 rows=52 width=44) (actual time=0.028..3.240 rows=34 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.143 ms
+Execution Time: 3.268 ms
+=== R02 run 3 ===
+Limit  (cost=2792.48..2792.61 rows=50 width=44) (actual time=3.412..3.414 rows=34 loops=1)
+  Buffers: shared hit=1294
+  ->  Sort  (cost=2792.48..2792.61 rows=52 width=44) (actual time=3.410..3.411 rows=34 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..2791.00 rows=52 width=44) (actual time=0.026..3.398 rows=34 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.132 ms
+Execution Time: 3.425 ms
+=== R02 run 4 ===
+Limit  (cost=2792.48..2792.61 rows=50 width=44) (actual time=4.646..4.650 rows=34 loops=1)
+  Buffers: shared hit=1294
+  ->  Sort  (cost=2792.48..2792.61 rows=52 width=44) (actual time=4.645..4.646 rows=34 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..2791.00 rows=52 width=44) (actual time=0.027..4.633 rows=34 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.132 ms
+Execution Time: 4.663 ms
+=== R02 run 5 ===
+Limit  (cost=2792.48..2792.61 rows=50 width=44) (actual time=4.180..4.184 rows=34 loops=1)
+  Buffers: shared hit=1294
+  ->  Sort  (cost=2792.48..2792.61 rows=52 width=44) (actual time=4.179..4.180 rows=34 loops=1)
+        Sort Key: sent_at DESC
+        Sort Method: quicksort  Memory: 27kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..2791.00 rows=52 width=44) (actual time=0.026..4.168 rows=34 loops=1)
+              Filter: (chat_id = 22556)
+              Rows Removed by Filter: 119966
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.127 ms
+Execution Time: 4.197 ms

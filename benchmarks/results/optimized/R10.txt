@@ -1,0 +1,80 @@
+=== R10 run 1 ===
+GroupAggregate  (cost=3720.19..3733.69 rows=600 width=20) (actual time=9.008..9.805 rows=30 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=1301
+  ->  Sort  (cost=3720.19..3721.69 rows=600 width=8) (actual time=8.895..9.020 rows=6593 loops=1)
+        Sort Key: ((sent_at)::date)
+        Sort Method: quicksort  Memory: 502kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..3692.50 rows=600 width=8) (actual time=6.524..8.479 rows=6593 loops=1)
+              Filter: (((sent_at)::date >= '2026-06-01'::date) AND ((sent_at)::date <= '2026-06-30'::date))
+              Rows Removed by Filter: 113407
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.173 ms
+Execution Time: 9.833 ms
+=== R10 run 2 ===
+GroupAggregate  (cost=3720.19..3733.69 rows=600 width=20) (actual time=8.365..8.968 rows=30 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=1301
+  ->  Sort  (cost=3720.19..3721.69 rows=600 width=8) (actual time=8.332..8.444 rows=6593 loops=1)
+        Sort Key: ((sent_at)::date)
+        Sort Method: quicksort  Memory: 502kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..3692.50 rows=600 width=8) (actual time=6.638..8.063 rows=6593 loops=1)
+              Filter: (((sent_at)::date >= '2026-06-01'::date) AND ((sent_at)::date <= '2026-06-30'::date))
+              Rows Removed by Filter: 113407
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.174 ms
+Execution Time: 8.994 ms
+=== R10 run 3 ===
+GroupAggregate  (cost=3720.19..3733.69 rows=600 width=20) (actual time=8.067..8.649 rows=30 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=1301
+  ->  Sort  (cost=3720.19..3721.69 rows=600 width=8) (actual time=8.034..8.142 rows=6593 loops=1)
+        Sort Key: ((sent_at)::date)
+        Sort Method: quicksort  Memory: 502kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..3692.50 rows=600 width=8) (actual time=6.449..7.780 rows=6593 loops=1)
+              Filter: (((sent_at)::date >= '2026-06-01'::date) AND ((sent_at)::date <= '2026-06-30'::date))
+              Rows Removed by Filter: 113407
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.166 ms
+Execution Time: 8.674 ms
+=== R10 run 4 ===
+GroupAggregate  (cost=3720.19..3733.69 rows=600 width=20) (actual time=8.182..8.740 rows=30 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=1301
+  ->  Sort  (cost=3720.19..3721.69 rows=600 width=8) (actual time=8.150..8.260 rows=6593 loops=1)
+        Sort Key: ((sent_at)::date)
+        Sort Method: quicksort  Memory: 502kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..3692.50 rows=600 width=8) (actual time=6.512..7.882 rows=6593 loops=1)
+              Filter: (((sent_at)::date >= '2026-06-01'::date) AND ((sent_at)::date <= '2026-06-30'::date))
+              Rows Removed by Filter: 113407
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.165 ms
+Execution Time: 8.765 ms
+=== R10 run 5 ===
+GroupAggregate  (cost=3720.19..3733.69 rows=600 width=20) (actual time=7.933..8.507 rows=30 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=1301
+  ->  Sort  (cost=3720.19..3721.69 rows=600 width=8) (actual time=7.902..8.007 rows=6593 loops=1)
+        Sort Key: ((sent_at)::date)
+        Sort Method: quicksort  Memory: 502kB
+        Buffers: shared hit=1294
+        ->  Seq Scan on messages  (cost=0.00..3692.50 rows=600 width=8) (actual time=6.331..7.649 rows=6593 loops=1)
+              Filter: (((sent_at)::date >= '2026-06-01'::date) AND ((sent_at)::date <= '2026-06-30'::date))
+              Rows Removed by Filter: 113407
+              Buffers: shared hit=1291
+Planning:
+  Buffers: shared hit=89
+Planning Time: 0.163 ms
+Execution Time: 8.531 ms

@@ -1,0 +1,165 @@
+=== R18 run 1 ===
+Sort  (cost=3652.39..3659.66 rows=2910 width=24) (actual time=13.908..14.021 rows=6097 loops=1)
+  Sort Key: u.last_seen_at
+  Sort Method: quicksort  Memory: 590kB
+  Buffers: shared hit=1274
+  ->  Hash Semi Join  (cost=2717.73..3484.97 rows=2910 width=24) (actual time=11.523..13.343 rows=6097 loops=1)
+        Hash Cond: (u.user_id = cm.user_id)
+        Buffers: shared hit=1271
+        ->  Seq Scan on users u  (cost=0.00..717.00 rows=6805 width=24) (actual time=0.004..1.310 rows=6794 loops=1)
+              Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+              Rows Removed by Filter: 23206
+              Buffers: shared hit=342
+        ->  Hash  (cost=2557.37..2557.37 rows=12829 width=4) (actual time=11.509..11.510 rows=58213 loops=1)
+              Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2559kB
+              Buffers: shared hit=929
+              ->  Hash Join  (cost=478.00..2557.37 rows=12829 width=4) (actual time=3.482..9.108 rows=58213 loops=1)
+                    Hash Cond: (cm.chat_id = c.chat_id)
+                    Buffers: shared hit=929
+                    ->  Seq Scan on chat_members cm  (cost=0.00..1821.14 rows=98355 width=8) (actual time=0.002..3.948 rows=98213 loops=1)
+                          Filter: (left_at IS NULL)
+                          Rows Removed by Filter: 6301
+                          Buffers: shared hit=776
+                    ->  Hash  (cost=440.50..440.50 rows=3000 width=4) (actual time=0.745..0.745 rows=3000 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 138kB
+                          Buffers: shared hit=153
+                          ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=4) (actual time=0.505..0.630 rows=3000 loops=1)
+                                Filter: (chat_type = 'GROUP'::chat_type)
+                                Rows Removed by Filter: 20000
+                                Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=267
+Planning Time: 0.416 ms
+Execution Time: 14.145 ms
+=== R18 run 2 ===
+Sort  (cost=3652.39..3659.66 rows=2910 width=24) (actual time=13.649..13.746 rows=6097 loops=1)
+  Sort Key: u.last_seen_at
+  Sort Method: quicksort  Memory: 590kB
+  Buffers: shared hit=1274
+  ->  Hash Semi Join  (cost=2717.73..3484.97 rows=2910 width=24) (actual time=11.222..13.070 rows=6097 loops=1)
+        Hash Cond: (u.user_id = cm.user_id)
+        Buffers: shared hit=1271
+        ->  Seq Scan on users u  (cost=0.00..717.00 rows=6805 width=24) (actual time=0.004..1.379 rows=6794 loops=1)
+              Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+              Rows Removed by Filter: 23206
+              Buffers: shared hit=342
+        ->  Hash  (cost=2557.37..2557.37 rows=12829 width=4) (actual time=11.209..11.209 rows=58213 loops=1)
+              Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2559kB
+              Buffers: shared hit=929
+              ->  Hash Join  (cost=478.00..2557.37 rows=12829 width=4) (actual time=3.310..8.828 rows=58213 loops=1)
+                    Hash Cond: (cm.chat_id = c.chat_id)
+                    Buffers: shared hit=929
+                    ->  Seq Scan on chat_members cm  (cost=0.00..1821.14 rows=98355 width=8) (actual time=0.002..3.843 rows=98213 loops=1)
+                          Filter: (left_at IS NULL)
+                          Rows Removed by Filter: 6301
+                          Buffers: shared hit=776
+                    ->  Hash  (cost=440.50..440.50 rows=3000 width=4) (actual time=0.719..0.719 rows=3000 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 138kB
+                          Buffers: shared hit=153
+                          ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=4) (actual time=0.487..0.607 rows=3000 loops=1)
+                                Filter: (chat_type = 'GROUP'::chat_type)
+                                Rows Removed by Filter: 20000
+                                Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=267
+Planning Time: 0.373 ms
+Execution Time: 13.862 ms
+=== R18 run 3 ===
+Sort  (cost=3652.39..3659.66 rows=2910 width=24) (actual time=13.703..13.804 rows=6097 loops=1)
+  Sort Key: u.last_seen_at
+  Sort Method: quicksort  Memory: 590kB
+  Buffers: shared hit=1274
+  ->  Hash Semi Join  (cost=2717.73..3484.97 rows=2910 width=24) (actual time=11.287..13.127 rows=6097 loops=1)
+        Hash Cond: (u.user_id = cm.user_id)
+        Buffers: shared hit=1271
+        ->  Seq Scan on users u  (cost=0.00..717.00 rows=6805 width=24) (actual time=0.004..1.349 rows=6794 loops=1)
+              Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+              Rows Removed by Filter: 23206
+              Buffers: shared hit=342
+        ->  Hash  (cost=2557.37..2557.37 rows=12829 width=4) (actual time=11.273..11.273 rows=58213 loops=1)
+              Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2559kB
+              Buffers: shared hit=929
+              ->  Hash Join  (cost=478.00..2557.37 rows=12829 width=4) (actual time=3.391..8.935 rows=58213 loops=1)
+                    Hash Cond: (cm.chat_id = c.chat_id)
+                    Buffers: shared hit=929
+                    ->  Seq Scan on chat_members cm  (cost=0.00..1821.14 rows=98355 width=8) (actual time=0.002..3.886 rows=98213 loops=1)
+                          Filter: (left_at IS NULL)
+                          Rows Removed by Filter: 6301
+                          Buffers: shared hit=776
+                    ->  Hash  (cost=440.50..440.50 rows=3000 width=4) (actual time=0.714..0.715 rows=3000 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 138kB
+                          Buffers: shared hit=153
+                          ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=4) (actual time=0.490..0.610 rows=3000 loops=1)
+                                Filter: (chat_type = 'GROUP'::chat_type)
+                                Rows Removed by Filter: 20000
+                                Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=267
+Planning Time: 0.390 ms
+Execution Time: 13.927 ms
+=== R18 run 4 ===
+Sort  (cost=3652.39..3659.66 rows=2910 width=24) (actual time=13.655..13.757 rows=6097 loops=1)
+  Sort Key: u.last_seen_at
+  Sort Method: quicksort  Memory: 590kB
+  Buffers: shared hit=1274
+  ->  Hash Semi Join  (cost=2717.73..3484.97 rows=2910 width=24) (actual time=11.225..13.077 rows=6097 loops=1)
+        Hash Cond: (u.user_id = cm.user_id)
+        Buffers: shared hit=1271
+        ->  Seq Scan on users u  (cost=0.00..717.00 rows=6805 width=24) (actual time=0.004..1.358 rows=6794 loops=1)
+              Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+              Rows Removed by Filter: 23206
+              Buffers: shared hit=342
+        ->  Hash  (cost=2557.37..2557.37 rows=12829 width=4) (actual time=11.211..11.212 rows=58213 loops=1)
+              Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2559kB
+              Buffers: shared hit=929
+              ->  Hash Join  (cost=478.00..2557.37 rows=12829 width=4) (actual time=3.374..8.919 rows=58213 loops=1)
+                    Hash Cond: (cm.chat_id = c.chat_id)
+                    Buffers: shared hit=929
+                    ->  Seq Scan on chat_members cm  (cost=0.00..1821.14 rows=98355 width=8) (actual time=0.002..3.844 rows=98213 loops=1)
+                          Filter: (left_at IS NULL)
+                          Rows Removed by Filter: 6301
+                          Buffers: shared hit=776
+                    ->  Hash  (cost=440.50..440.50 rows=3000 width=4) (actual time=0.722..0.722 rows=3000 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 138kB
+                          Buffers: shared hit=153
+                          ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=4) (actual time=0.494..0.612 rows=3000 loops=1)
+                                Filter: (chat_type = 'GROUP'::chat_type)
+                                Rows Removed by Filter: 20000
+                                Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=267
+Planning Time: 0.389 ms
+Execution Time: 13.881 ms
+=== R18 run 5 ===
+Sort  (cost=3652.39..3659.66 rows=2910 width=24) (actual time=13.533..13.631 rows=6097 loops=1)
+  Sort Key: u.last_seen_at
+  Sort Method: quicksort  Memory: 590kB
+  Buffers: shared hit=1274
+  ->  Hash Semi Join  (cost=2717.73..3484.97 rows=2910 width=24) (actual time=11.090..12.959 rows=6097 loops=1)
+        Hash Cond: (u.user_id = cm.user_id)
+        Buffers: shared hit=1271
+        ->  Seq Scan on users u  (cost=0.00..717.00 rows=6805 width=24) (actual time=0.004..1.378 rows=6794 loops=1)
+              Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+              Rows Removed by Filter: 23206
+              Buffers: shared hit=342
+        ->  Hash  (cost=2557.37..2557.37 rows=12829 width=4) (actual time=11.076..11.077 rows=58213 loops=1)
+              Buckets: 65536 (originally 16384)  Batches: 1 (originally 1)  Memory Usage: 2559kB
+              Buffers: shared hit=929
+              ->  Hash Join  (cost=478.00..2557.37 rows=12829 width=4) (actual time=3.324..8.813 rows=58213 loops=1)
+                    Hash Cond: (cm.chat_id = c.chat_id)
+                    Buffers: shared hit=929
+                    ->  Seq Scan on chat_members cm  (cost=0.00..1821.14 rows=98355 width=8) (actual time=0.002..3.816 rows=98213 loops=1)
+                          Filter: (left_at IS NULL)
+                          Rows Removed by Filter: 6301
+                          Buffers: shared hit=776
+                    ->  Hash  (cost=440.50..440.50 rows=3000 width=4) (actual time=0.705..0.705 rows=3000 loops=1)
+                          Buckets: 4096  Batches: 1  Memory Usage: 138kB
+                          Buffers: shared hit=153
+                          ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=4) (actual time=0.481..0.600 rows=3000 loops=1)
+                                Filter: (chat_type = 'GROUP'::chat_type)
+                                Rows Removed by Filter: 20000
+                                Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=267
+Planning Time: 0.390 ms
+Execution Time: 13.748 ms

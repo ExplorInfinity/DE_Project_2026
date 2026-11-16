@@ -1,0 +1,85 @@
+=== R24 run 1 ===
+Sort  (cost=1832.61..1852.96 rows=8140 width=105) (actual time=9.663..9.665 rows=48 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 31kB
+  Buffers: shared hit=457
+  ->  HashAggregate  (cost=937.60..1303.88 rows=8140 width=105) (actual time=6.547..9.651 rows=48 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Batches: 1  Memory Usage: 7441kB
+        Rows Removed by Filter: 24371
+        Buffers: shared hit=454
+        ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=73) (actual time=0.002..0.991 rows=27634 loops=1)
+              Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=124
+Planning Time: 0.165 ms
+Execution Time: 9.743 ms
+=== R24 run 2 ===
+Sort  (cost=1832.61..1852.96 rows=8140 width=105) (actual time=9.220..9.221 rows=48 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 31kB
+  Buffers: shared hit=457
+  ->  HashAggregate  (cost=937.60..1303.88 rows=8140 width=105) (actual time=6.918..9.208 rows=48 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Batches: 1  Memory Usage: 7441kB
+        Rows Removed by Filter: 24371
+        Buffers: shared hit=454
+        ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=73) (actual time=0.004..1.051 rows=27634 loops=1)
+              Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=124
+Planning Time: 0.160 ms
+Execution Time: 9.326 ms
+=== R24 run 3 ===
+Sort  (cost=1832.61..1852.96 rows=8140 width=105) (actual time=8.493..8.495 rows=48 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 31kB
+  Buffers: shared hit=457
+  ->  HashAggregate  (cost=937.60..1303.88 rows=8140 width=105) (actual time=6.254..8.481 rows=48 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Batches: 1  Memory Usage: 7441kB
+        Rows Removed by Filter: 24371
+        Buffers: shared hit=454
+        ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=73) (actual time=0.002..0.960 rows=27634 loops=1)
+              Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=124
+Planning Time: 0.173 ms
+Execution Time: 8.577 ms
+=== R24 run 4 ===
+Sort  (cost=1832.61..1852.96 rows=8140 width=105) (actual time=8.058..8.059 rows=48 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 31kB
+  Buffers: shared hit=457
+  ->  HashAggregate  (cost=937.60..1303.88 rows=8140 width=105) (actual time=5.544..8.047 rows=48 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Batches: 1  Memory Usage: 7441kB
+        Rows Removed by Filter: 24371
+        Buffers: shared hit=454
+        ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=73) (actual time=0.003..0.838 rows=27634 loops=1)
+              Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=124
+Planning Time: 0.165 ms
+Execution Time: 8.139 ms
+=== R24 run 5 ===
+Sort  (cost=1832.61..1852.96 rows=8140 width=105) (actual time=8.047..8.048 rows=48 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 31kB
+  Buffers: shared hit=457
+  ->  HashAggregate  (cost=937.60..1303.88 rows=8140 width=105) (actual time=5.497..8.037 rows=48 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Batches: 1  Memory Usage: 7441kB
+        Rows Removed by Filter: 24371
+        Buffers: shared hit=454
+        ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=73) (actual time=0.002..0.861 rows=27634 loops=1)
+              Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=124
+Planning Time: 0.164 ms
+Execution Time: 8.127 ms

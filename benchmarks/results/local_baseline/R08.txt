@@ -1,0 +1,150 @@
+=== R08 run 1 ===
+Limit  (cost=9820.53..9878.03 rows=500 width=16) (actual time=30.320..31.949 rows=500 loops=1)
+  Buffers: shared hit=4446
+  ->  Gather Merge  (cost=9820.53..10131.61 rows=2705 width=16) (actual time=30.320..31.914 rows=500 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4446
+        ->  Sort  (cost=8820.52..8827.29 rows=2705 width=16) (actual time=28.531..28.557 rows=382 loops=2)
+              Sort Key: m.sent_at
+              Sort Method: top-N heapsort  Memory: 48kB
+              Buffers: shared hit=4446
+              Worker 0:  Sort Method: top-N heapsort  Memory: 48kB
+              ->  Parallel Hash Join  (cost=6055.34..8685.74 rows=2705 width=16) (actual time=17.209..28.164 rows=2524 loops=2)
+                    Hash Cond: (m.message_id = r.message_id)
+                    Buffers: shared hit=4409
+                    ->  Parallel Seq Scan on messages m  (cost=0.00..2173.35 rows=70581 width=12) (actual time=0.010..6.451 rows=59996 loops=2)
+                          Filter: (sent_at < '2026-06-30 23:00:00+05:30'::timestamp with time zone)
+                          Rows Removed by Filter: 4
+                          Buffers: shared hit=1291
+                    ->  Parallel Hash  (cost=6021.53..6021.53 rows=2705 width=8) (actual time=17.110..17.111 rows=2538 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 288kB
+                          Buffers: shared hit=3071
+                          ->  Parallel Seq Scan on message_receipts r  (cost=0.00..6021.53 rows=2705 width=8) (actual time=0.011..16.761 rows=2538 loops=2)
+                                Filter: (delivered_at IS NULL)
+                                Rows Removed by Filter: 248257
+                                Buffers: shared hit=3071
+Planning:
+  Buffers: shared hit=204
+Planning Time: 0.662 ms
+Execution Time: 32.011 ms
+=== R08 run 2 ===
+Limit  (cost=9820.53..9878.03 rows=500 width=16) (actual time=22.760..23.778 rows=500 loops=1)
+  Buffers: shared hit=4446
+  ->  Gather Merge  (cost=9820.53..10131.61 rows=2705 width=16) (actual time=22.759..23.749 rows=500 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4446
+        ->  Sort  (cost=8820.52..8827.29 rows=2705 width=16) (actual time=21.307..21.319 rows=362 loops=2)
+              Sort Key: m.sent_at
+              Sort Method: top-N heapsort  Memory: 48kB
+              Buffers: shared hit=4446
+              Worker 0:  Sort Method: top-N heapsort  Memory: 48kB
+              ->  Parallel Hash Join  (cost=6055.34..8685.74 rows=2705 width=16) (actual time=14.404..21.062 rows=2524 loops=2)
+                    Hash Cond: (m.message_id = r.message_id)
+                    Buffers: shared hit=4409
+                    ->  Parallel Seq Scan on messages m  (cost=0.00..2173.35 rows=70581 width=12) (actual time=0.005..3.656 rows=59996 loops=2)
+                          Filter: (sent_at < '2026-06-30 23:00:00+05:30'::timestamp with time zone)
+                          Rows Removed by Filter: 4
+                          Buffers: shared hit=1291
+                    ->  Parallel Hash  (cost=6021.53..6021.53 rows=2705 width=8) (actual time=14.337..14.338 rows=2538 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 288kB
+                          Buffers: shared hit=3071
+                          ->  Parallel Seq Scan on message_receipts r  (cost=0.00..6021.53 rows=2705 width=8) (actual time=0.011..14.073 rows=2538 loops=2)
+                                Filter: (delivered_at IS NULL)
+                                Rows Removed by Filter: 248257
+                                Buffers: shared hit=3071
+Planning:
+  Buffers: shared hit=204
+Planning Time: 0.328 ms
+Execution Time: 23.817 ms
+=== R08 run 3 ===
+Limit  (cost=9820.53..9878.03 rows=500 width=16) (actual time=16.827..17.708 rows=500 loops=1)
+  Buffers: shared hit=4446
+  ->  Gather Merge  (cost=9820.53..10131.61 rows=2705 width=16) (actual time=16.827..17.678 rows=500 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4446
+        ->  Sort  (cost=8820.52..8827.29 rows=2705 width=16) (actual time=15.852..15.861 rows=390 loops=2)
+              Sort Key: m.sent_at
+              Sort Method: top-N heapsort  Memory: 48kB
+              Buffers: shared hit=4446
+              Worker 0:  Sort Method: top-N heapsort  Memory: 48kB
+              ->  Parallel Hash Join  (cost=6055.34..8685.74 rows=2705 width=16) (actual time=9.567..15.641 rows=2524 loops=2)
+                    Hash Cond: (m.message_id = r.message_id)
+                    Buffers: shared hit=4409
+                    ->  Parallel Seq Scan on messages m  (cost=0.00..2173.35 rows=70581 width=12) (actual time=0.004..3.273 rows=59996 loops=2)
+                          Filter: (sent_at < '2026-06-30 23:00:00+05:30'::timestamp with time zone)
+                          Rows Removed by Filter: 4
+                          Buffers: shared hit=1291
+                    ->  Parallel Hash  (cost=6021.53..6021.53 rows=2705 width=8) (actual time=9.508..9.508 rows=2538 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 288kB
+                          Buffers: shared hit=3071
+                          ->  Parallel Seq Scan on message_receipts r  (cost=0.00..6021.53 rows=2705 width=8) (actual time=0.025..9.334 rows=2538 loops=2)
+                                Filter: (delivered_at IS NULL)
+                                Rows Removed by Filter: 248257
+                                Buffers: shared hit=3071
+Planning:
+  Buffers: shared hit=204
+Planning Time: 0.398 ms
+Execution Time: 17.750 ms
+=== R08 run 4 ===
+Limit  (cost=9820.53..9878.03 rows=500 width=16) (actual time=16.386..17.159 rows=500 loops=1)
+  Buffers: shared hit=4446
+  ->  Gather Merge  (cost=9820.53..10131.61 rows=2705 width=16) (actual time=16.385..17.140 rows=500 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4446
+        ->  Sort  (cost=8820.52..8827.29 rows=2705 width=16) (actual time=15.342..15.350 rows=394 loops=2)
+              Sort Key: m.sent_at
+              Sort Method: top-N heapsort  Memory: 48kB
+              Buffers: shared hit=4446
+              Worker 0:  Sort Method: top-N heapsort  Memory: 48kB
+              ->  Parallel Hash Join  (cost=6055.34..8685.74 rows=2705 width=16) (actual time=9.348..15.146 rows=2524 loops=2)
+                    Hash Cond: (m.message_id = r.message_id)
+                    Buffers: shared hit=4409
+                    ->  Parallel Seq Scan on messages m  (cost=0.00..2173.35 rows=70581 width=12) (actual time=0.004..3.190 rows=59996 loops=2)
+                          Filter: (sent_at < '2026-06-30 23:00:00+05:30'::timestamp with time zone)
+                          Rows Removed by Filter: 4
+                          Buffers: shared hit=1291
+                    ->  Parallel Hash  (cost=6021.53..6021.53 rows=2705 width=8) (actual time=9.289..9.289 rows=2538 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 288kB
+                          Buffers: shared hit=3071
+                          ->  Parallel Seq Scan on message_receipts r  (cost=0.00..6021.53 rows=2705 width=8) (actual time=0.014..9.119 rows=2538 loops=2)
+                                Filter: (delivered_at IS NULL)
+                                Rows Removed by Filter: 248257
+                                Buffers: shared hit=3071
+Planning:
+  Buffers: shared hit=204
+Planning Time: 0.321 ms
+Execution Time: 17.192 ms
+=== R08 run 5 ===
+Limit  (cost=9820.53..9878.03 rows=500 width=16) (actual time=15.825..16.674 rows=500 loops=1)
+  Buffers: shared hit=4446
+  ->  Gather Merge  (cost=9820.53..10131.61 rows=2705 width=16) (actual time=15.824..16.652 rows=500 loops=1)
+        Workers Planned: 1
+        Workers Launched: 1
+        Buffers: shared hit=4446
+        ->  Sort  (cost=8820.52..8827.29 rows=2705 width=16) (actual time=14.916..14.924 rows=368 loops=2)
+              Sort Key: m.sent_at
+              Sort Method: top-N heapsort  Memory: 48kB
+              Buffers: shared hit=4446
+              Worker 0:  Sort Method: top-N heapsort  Memory: 48kB
+              ->  Parallel Hash Join  (cost=6055.34..8685.74 rows=2705 width=16) (actual time=9.137..14.722 rows=2524 loops=2)
+                    Hash Cond: (m.message_id = r.message_id)
+                    Buffers: shared hit=4409
+                    ->  Parallel Seq Scan on messages m  (cost=0.00..2173.35 rows=70581 width=12) (actual time=0.004..3.067 rows=59996 loops=2)
+                          Filter: (sent_at < '2026-06-30 23:00:00+05:30'::timestamp with time zone)
+                          Rows Removed by Filter: 4
+                          Buffers: shared hit=1291
+                    ->  Parallel Hash  (cost=6021.53..6021.53 rows=2705 width=8) (actual time=9.086..9.087 rows=2538 loops=2)
+                          Buckets: 8192  Batches: 1  Memory Usage: 288kB
+                          Buffers: shared hit=3071
+                          ->  Parallel Seq Scan on message_receipts r  (cost=0.00..6021.53 rows=2705 width=8) (actual time=0.005..8.912 rows=2538 loops=2)
+                                Filter: (delivered_at IS NULL)
+                                Rows Removed by Filter: 248257
+                                Buffers: shared hit=3071
+Planning:
+  Buffers: shared hit=204
+Planning Time: 0.329 ms
+Execution Time: 16.706 ms
