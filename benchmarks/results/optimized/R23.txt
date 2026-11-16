@@ -1,45 +1,45 @@
 === R23 run 1 ===
-Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.69 rows=5966 width=20) (actual time=0.033..0.480 rows=6945 loops=1)
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..227.45 rows=5895 width=20) (actual time=0.034..0.383 rows=6945 loops=1)
   Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
   Heap Fetches: 0
   Buffers: shared hit=37
 Planning:
   Buffers: shared hit=137
-Planning Time: 0.257 ms
-Execution Time: 0.629 ms
+Planning Time: 0.237 ms
+Execution Time: 0.526 ms
 === R23 run 2 ===
-Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.69 rows=5966 width=20) (actual time=0.020..0.320 rows=6945 loops=1)
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..227.45 rows=5895 width=20) (actual time=0.022..0.318 rows=6945 loops=1)
   Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
   Heap Fetches: 0
   Buffers: shared hit=37
 Planning:
   Buffers: shared hit=137
-Planning Time: 0.199 ms
-Execution Time: 0.457 ms
+Planning Time: 0.208 ms
+Execution Time: 0.451 ms
 === R23 run 3 ===
-Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.69 rows=5966 width=20) (actual time=0.021..0.299 rows=6945 loops=1)
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..227.45 rows=5895 width=20) (actual time=0.018..0.282 rows=6945 loops=1)
   Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
   Heap Fetches: 0
   Buffers: shared hit=37
 Planning:
   Buffers: shared hit=137
-Planning Time: 0.199 ms
-Execution Time: 0.421 ms
+Planning Time: 0.181 ms
+Execution Time: 0.404 ms
 === R23 run 4 ===
-Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.69 rows=5966 width=20) (actual time=0.021..0.286 rows=6945 loops=1)
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..227.45 rows=5895 width=20) (actual time=0.018..0.305 rows=6945 loops=1)
   Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
   Heap Fetches: 0
   Buffers: shared hit=37
 Planning:
   Buffers: shared hit=137
-Planning Time: 0.197 ms
-Execution Time: 0.407 ms
+Planning Time: 0.180 ms
+Execution Time: 0.425 ms
 === R23 run 5 ===
-Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.69 rows=5966 width=20) (actual time=0.027..0.442 rows=6945 loops=1)
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..227.45 rows=5895 width=20) (actual time=0.018..0.433 rows=6945 loops=1)
   Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
   Heap Fetches: 0
   Buffers: shared hit=37
 Planning:
   Buffers: shared hit=137
-Planning Time: 0.183 ms
-Execution Time: 0.631 ms
+Planning Time: 0.171 ms
+Execution Time: 0.608 ms

@@ -206,14 +206,10 @@ ORDER BY ms.last_message_at DESC NULLS LAST;
 
 -- @R20
 -- Capacity planning: messages per hour of the day, by message type
-
-SELECT
-    EXTRACT(HOUR FROM sent_at) AS hour,
-    message_type,
-    COUNT(*) AS messages
+SELECT EXTRACT(HOUR FROM sent_at) AS hour, message_type, count(*) AS messages
 FROM messages
-GROUP BY EXTRACT(HOUR FROM sent_at), message_type
-ORDER BY EXTRACT(HOUR FROM sent_at), message_type;
+GROUP BY 1, 2
+ORDER BY 1, 2;
 
 
 -- @R21

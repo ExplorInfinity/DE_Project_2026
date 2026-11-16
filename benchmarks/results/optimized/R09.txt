@@ -1,85 +1,85 @@
 === R09 run 1 ===
-Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.837..9.839 rows=20 loops=1)
+Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=10.774..10.776 rows=20 loops=1)
   Buffers: shared hit=457
-  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.836..9.836 rows=20 loops=1)
+  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=10.773..10.773 rows=20 loops=1)
         Sort Key: (sum(size_bytes)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
         Buffers: shared hit=457
-        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=4.148..8.489 rows=17117 loops=1)
+        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=4.617..9.305 rows=17117 loops=1)
               Group Key: uploader_id
               Batches: 1  Memory Usage: 3857kB
               Buffers: shared hit=454
-              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.800 rows=27634 loops=1)
+              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.003..0.852 rows=27634 loops=1)
                     Buffers: shared hit=454
 Planning:
   Buffers: shared hit=86
-Planning Time: 0.200 ms
-Execution Time: 9.913 ms
+Planning Time: 0.171 ms
+Execution Time: 10.852 ms
 === R09 run 2 ===
-Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.752..9.753 rows=20 loops=1)
+Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.985..9.987 rows=20 loops=1)
   Buffers: shared hit=457
-  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.750..9.751 rows=20 loops=1)
+  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.983..9.985 rows=20 loops=1)
         Sort Key: (sum(size_bytes)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
         Buffers: shared hit=457
-        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.980..8.322 rows=17117 loops=1)
+        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.971..8.488 rows=17117 loops=1)
               Group Key: uploader_id
               Batches: 1  Memory Usage: 3857kB
               Buffers: shared hit=454
-              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.003..0.784 rows=27634 loops=1)
+              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.794 rows=27634 loops=1)
+                    Buffers: shared hit=454
+Planning:
+  Buffers: shared hit=86
+Planning Time: 0.163 ms
+Execution Time: 10.066 ms
+=== R09 run 3 ===
+Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.525..9.526 rows=20 loops=1)
+  Buffers: shared hit=457
+  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.523..9.524 rows=20 loops=1)
+        Sort Key: (sum(size_bytes)) DESC
+        Sort Method: top-N heapsort  Memory: 27kB
+        Buffers: shared hit=457
+        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.806..8.102 rows=17117 loops=1)
+              Group Key: uploader_id
+              Batches: 1  Memory Usage: 3857kB
+              Buffers: shared hit=454
+              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.756 rows=27634 loops=1)
                     Buffers: shared hit=454
 Planning:
   Buffers: shared hit=86
 Planning Time: 0.158 ms
-Execution Time: 9.835 ms
-=== R09 run 3 ===
-Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.257..9.258 rows=20 loops=1)
-  Buffers: shared hit=457
-  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.255..9.256 rows=20 loops=1)
-        Sort Key: (sum(size_bytes)) DESC
-        Sort Method: top-N heapsort  Memory: 27kB
-        Buffers: shared hit=457
-        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.879..7.922 rows=17117 loops=1)
-              Group Key: uploader_id
-              Batches: 1  Memory Usage: 3857kB
-              Buffers: shared hit=454
-              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.003..0.769 rows=27634 loops=1)
-                    Buffers: shared hit=454
-Planning:
-  Buffers: shared hit=86
-Planning Time: 0.154 ms
-Execution Time: 9.337 ms
+Execution Time: 9.602 ms
 === R09 run 4 ===
-Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=8.929..8.930 rows=20 loops=1)
+Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.498..9.499 rows=20 loops=1)
   Buffers: shared hit=457
-  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=8.928..8.928 rows=20 loops=1)
+  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.496..9.497 rows=20 loops=1)
         Sort Key: (sum(size_bytes)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
         Buffers: shared hit=457
-        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.629..7.606 rows=17117 loops=1)
+        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.947..8.121 rows=17117 loops=1)
               Group Key: uploader_id
               Batches: 1  Memory Usage: 3857kB
               Buffers: shared hit=454
-              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.725 rows=27634 loops=1)
+              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.769 rows=27634 loops=1)
                     Buffers: shared hit=454
 Planning:
   Buffers: shared hit=86
-Planning Time: 0.151 ms
-Execution Time: 9.005 ms
+Planning Time: 0.156 ms
+Execution Time: 9.574 ms
 === R09 run 5 ===
-Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.122..9.123 rows=20 loops=1)
+Limit  (cost=1778.20..1778.25 rows=20 width=76) (actual time=9.709..9.710 rows=20 loops=1)
   Buffers: shared hit=457
-  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.121..9.121 rows=20 loops=1)
+  ->  Sort  (cost=1778.20..1821.00 rows=17117 width=76) (actual time=9.707..9.708 rows=20 loops=1)
         Sort Key: (sum(size_bytes)) DESC
         Sort Method: top-N heapsort  Memory: 27kB
         Buffers: shared hit=457
-        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.728..7.808 rows=17117 loops=1)
+        ->  HashAggregate  (cost=937.60..1322.73 rows=17117 width=76) (actual time=3.965..8.297 rows=17117 loops=1)
               Group Key: uploader_id
               Batches: 1  Memory Usage: 3857kB
               Buffers: shared hit=454
-              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.003..0.735 rows=27634 loops=1)
+              ->  Seq Scan on media  (cost=0.00..730.34 rows=27634 width=12) (actual time=0.002..0.771 rows=27634 loops=1)
                     Buffers: shared hit=454
 Planning:
   Buffers: shared hit=86
-Planning Time: 0.148 ms
-Execution Time: 9.207 ms
+Planning Time: 0.147 ms
+Execution Time: 9.785 ms

@@ -1,90 +1,130 @@
 === W02 run 1 ===
-Update on message_receipts r  (cost=0.42..2860.83 rows=0 width=0) (actual time=14.310..14.311 rows=0 loops=1)
-  Buffers: shared hit=1561 dirtied=8
-  ->  Nested Loop  (cost=0.42..2860.83 rows=1 width=28) (actual time=0.110..13.603 rows=14 loops=1)
-        Buffers: shared hit=1426
-        ->  Seq Scan on messages m  (cost=0.00..2791.00 rows=8 width=10) (actual time=0.095..13.028 rows=34 loops=1)
-              Filter: (chat_id = 22556)
-              Rows Removed by Filter: 119966
-              Buffers: shared hit=1291
-        ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.44 rows=1 width=18) (actual time=0.016..0.016 rows=0 loops=34)
-              Index Cond: ((message_id = m.message_id) AND (user_id = 965))
-              Filter: (read_at IS NULL)
-              Rows Removed by Filter: 1
+Update on message_receipts r  (cost=5.13..619.37 rows=0 width=0) (actual time=1.459..1.461 rows=0 loops=1)
+  Buffers: shared hit=305 dirtied=14
+  ->  Nested Loop  (cost=5.13..619.37 rows=1 width=28) (actual time=0.063..0.789 rows=14 loops=1)
+        Buffers: shared hit=170
+        ->  Bitmap Heap Scan on messages m  (cost=4.70..178.94 rows=52 width=10) (actual time=0.028..0.174 rows=34 loops=1)
+              Recheck Cond: (chat_id = 22556)
+              Heap Blocks: exact=33
+              Buffers: shared hit=35
+              ->  Bitmap Index Scan on idx_messages_chat_id  (cost=0.00..4.68 rows=52 width=0) (actual time=0.019..0.019 rows=44 loops=1)
+                    Index Cond: (chat_id = 22556)
+                    Buffers: shared hit=2
+        ->  Memoize  (cost=0.43..8.46 rows=1 width=18) (actual time=0.017..0.017 rows=0 loops=34)
+              Cache Key: m.message_id
+              Cache Mode: logical
+              Hits: 0  Misses: 34  Evictions: 0  Overflows: 0  Memory Usage: 3kB
               Buffers: shared hit=135
+              ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.45 rows=1 width=18) (actual time=0.016..0.016 rows=0 loops=34)
+                    Index Cond: ((message_id = m.message_id) AND (user_id = 965))
+                    Filter: (read_at IS NULL)
+                    Rows Removed by Filter: 1
+                    Buffers: shared hit=135
 Planning:
-  Buffers: shared hit=234
-Planning Time: 1.107 ms
-Execution Time: 14.456 ms
+  Buffers: shared hit=246
+Planning Time: 1.462 ms
+Execution Time: 1.661 ms
 === W02 run 2 ===
-Update on message_receipts r  (cost=0.42..2860.83 rows=0 width=0) (actual time=12.076..12.077 rows=0 loops=1)
-  Buffers: shared hit=1563 dirtied=1 written=1
-  ->  Nested Loop  (cost=0.42..2860.83 rows=1 width=28) (actual time=0.166..11.451 rows=14 loops=1)
-        Buffers: shared hit=1426
-        ->  Seq Scan on messages m  (cost=0.00..2791.00 rows=8 width=10) (actual time=0.121..10.887 rows=34 loops=1)
-              Filter: (chat_id = 22556)
-              Rows Removed by Filter: 119966
-              Buffers: shared hit=1291
-        ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.44 rows=1 width=18) (actual time=0.016..0.016 rows=0 loops=34)
-              Index Cond: ((message_id = m.message_id) AND (user_id = 965))
-              Filter: (read_at IS NULL)
-              Rows Removed by Filter: 1
+Update on message_receipts r  (cost=5.13..619.37 rows=0 width=0) (actual time=1.106..1.108 rows=0 loops=1)
+  Buffers: shared hit=305
+  ->  Nested Loop  (cost=5.13..619.37 rows=1 width=28) (actual time=0.059..0.794 rows=14 loops=1)
+        Buffers: shared hit=170
+        ->  Bitmap Heap Scan on messages m  (cost=4.70..178.94 rows=52 width=10) (actual time=0.022..0.211 rows=34 loops=1)
+              Recheck Cond: (chat_id = 22556)
+              Heap Blocks: exact=33
+              Buffers: shared hit=35
+              ->  Bitmap Index Scan on idx_messages_chat_id  (cost=0.00..4.68 rows=52 width=0) (actual time=0.014..0.014 rows=44 loops=1)
+                    Index Cond: (chat_id = 22556)
+                    Buffers: shared hit=2
+        ->  Memoize  (cost=0.43..8.46 rows=1 width=18) (actual time=0.017..0.017 rows=0 loops=34)
+              Cache Key: m.message_id
+              Cache Mode: logical
+              Hits: 0  Misses: 34  Evictions: 0  Overflows: 0  Memory Usage: 3kB
               Buffers: shared hit=135
+              ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.45 rows=1 width=18) (actual time=0.016..0.016 rows=0 loops=34)
+                    Index Cond: ((message_id = m.message_id) AND (user_id = 965))
+                    Filter: (read_at IS NULL)
+                    Rows Removed by Filter: 1
+                    Buffers: shared hit=135
 Planning:
-  Buffers: shared hit=234
-Planning Time: 1.378 ms
-Execution Time: 12.238 ms
+  Buffers: shared hit=246
+Planning Time: 1.586 ms
+Execution Time: 1.279 ms
 === W02 run 3 ===
-Update on message_receipts r  (cost=0.42..2860.83 rows=0 width=0) (actual time=9.976..9.976 rows=0 loops=1)
-  Buffers: shared hit=1561
-  ->  Nested Loop  (cost=0.42..2860.83 rows=1 width=28) (actual time=0.141..9.695 rows=14 loops=1)
-        Buffers: shared hit=1426
-        ->  Seq Scan on messages m  (cost=0.00..2791.00 rows=8 width=10) (actual time=0.095..9.188 rows=34 loops=1)
-              Filter: (chat_id = 22556)
-              Rows Removed by Filter: 119966
-              Buffers: shared hit=1291
-        ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.44 rows=1 width=18) (actual time=0.014..0.014 rows=0 loops=34)
-              Index Cond: ((message_id = m.message_id) AND (user_id = 965))
-              Filter: (read_at IS NULL)
-              Rows Removed by Filter: 1
+Update on message_receipts r  (cost=5.13..619.37 rows=0 width=0) (actual time=1.293..1.294 rows=0 loops=1)
+  Buffers: shared hit=305
+  ->  Nested Loop  (cost=5.13..619.37 rows=1 width=28) (actual time=0.089..0.964 rows=14 loops=1)
+        Buffers: shared hit=170
+        ->  Bitmap Heap Scan on messages m  (cost=4.70..178.94 rows=52 width=10) (actual time=0.031..0.233 rows=34 loops=1)
+              Recheck Cond: (chat_id = 22556)
+              Heap Blocks: exact=33
+              Buffers: shared hit=35
+              ->  Bitmap Index Scan on idx_messages_chat_id  (cost=0.00..4.68 rows=52 width=0) (actual time=0.019..0.020 rows=44 loops=1)
+                    Index Cond: (chat_id = 22556)
+                    Buffers: shared hit=2
+        ->  Memoize  (cost=0.43..8.46 rows=1 width=18) (actual time=0.021..0.021 rows=0 loops=34)
+              Cache Key: m.message_id
+              Cache Mode: logical
+              Hits: 0  Misses: 34  Evictions: 0  Overflows: 0  Memory Usage: 3kB
               Buffers: shared hit=135
+              ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.45 rows=1 width=18) (actual time=0.020..0.020 rows=0 loops=34)
+                    Index Cond: ((message_id = m.message_id) AND (user_id = 965))
+                    Filter: (read_at IS NULL)
+                    Rows Removed by Filter: 1
+                    Buffers: shared hit=135
 Planning:
-  Buffers: shared hit=234
-Planning Time: 1.158 ms
-Execution Time: 10.080 ms
+  Buffers: shared hit=246
+Planning Time: 1.708 ms
+Execution Time: 1.462 ms
 === W02 run 4 ===
-Update on message_receipts r  (cost=0.42..2860.83 rows=0 width=0) (actual time=7.523..7.524 rows=0 loops=1)
-  Buffers: shared hit=1561
-  ->  Nested Loop  (cost=0.42..2860.83 rows=1 width=28) (actual time=0.087..7.345 rows=14 loops=1)
-        Buffers: shared hit=1426
-        ->  Seq Scan on messages m  (cost=0.00..2791.00 rows=8 width=10) (actual time=0.069..7.070 rows=34 loops=1)
-              Filter: (chat_id = 22556)
-              Rows Removed by Filter: 119966
-              Buffers: shared hit=1291
-        ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.44 rows=1 width=18) (actual time=0.008..0.008 rows=0 loops=34)
-              Index Cond: ((message_id = m.message_id) AND (user_id = 965))
-              Filter: (read_at IS NULL)
-              Rows Removed by Filter: 1
+Update on message_receipts r  (cost=5.13..619.37 rows=0 width=0) (actual time=0.880..0.881 rows=0 loops=1)
+  Buffers: shared hit=305
+  ->  Nested Loop  (cost=5.13..619.37 rows=1 width=28) (actual time=0.061..0.620 rows=14 loops=1)
+        Buffers: shared hit=170
+        ->  Bitmap Heap Scan on messages m  (cost=4.70..178.94 rows=52 width=10) (actual time=0.023..0.149 rows=34 loops=1)
+              Recheck Cond: (chat_id = 22556)
+              Heap Blocks: exact=33
+              Buffers: shared hit=35
+              ->  Bitmap Index Scan on idx_messages_chat_id  (cost=0.00..4.68 rows=52 width=0) (actual time=0.016..0.016 rows=44 loops=1)
+                    Index Cond: (chat_id = 22556)
+                    Buffers: shared hit=2
+        ->  Memoize  (cost=0.43..8.46 rows=1 width=18) (actual time=0.013..0.013 rows=0 loops=34)
+              Cache Key: m.message_id
+              Cache Mode: logical
+              Hits: 0  Misses: 34  Evictions: 0  Overflows: 0  Memory Usage: 3kB
               Buffers: shared hit=135
+              ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.45 rows=1 width=18) (actual time=0.013..0.013 rows=0 loops=34)
+                    Index Cond: ((message_id = m.message_id) AND (user_id = 965))
+                    Filter: (read_at IS NULL)
+                    Rows Removed by Filter: 1
+                    Buffers: shared hit=135
 Planning:
-  Buffers: shared hit=234
-Planning Time: 0.692 ms
-Execution Time: 7.594 ms
+  Buffers: shared hit=246
+Planning Time: 1.244 ms
+Execution Time: 1.017 ms
 === W02 run 5 ===
-Update on message_receipts r  (cost=0.42..2860.83 rows=0 width=0) (actual time=4.416..4.416 rows=0 loops=1)
-  Buffers: shared hit=1561
-  ->  Nested Loop  (cost=0.42..2860.83 rows=1 width=28) (actual time=0.042..4.323 rows=14 loops=1)
-        Buffers: shared hit=1426
-        ->  Seq Scan on messages m  (cost=0.00..2791.00 rows=8 width=10) (actual time=0.031..4.136 rows=34 loops=1)
-              Filter: (chat_id = 22556)
-              Rows Removed by Filter: 119966
-              Buffers: shared hit=1291
-        ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.44 rows=1 width=18) (actual time=0.005..0.005 rows=0 loops=34)
-              Index Cond: ((message_id = m.message_id) AND (user_id = 965))
-              Filter: (read_at IS NULL)
-              Rows Removed by Filter: 1
+Update on message_receipts r  (cost=5.13..619.37 rows=0 width=0) (actual time=1.567..1.568 rows=0 loops=1)
+  Buffers: shared hit=305
+  ->  Nested Loop  (cost=5.13..619.37 rows=1 width=28) (actual time=0.101..1.187 rows=14 loops=1)
+        Buffers: shared hit=170
+        ->  Bitmap Heap Scan on messages m  (cost=4.70..178.94 rows=52 width=10) (actual time=0.027..0.276 rows=34 loops=1)
+              Recheck Cond: (chat_id = 22556)
+              Heap Blocks: exact=33
+              Buffers: shared hit=35
+              ->  Bitmap Index Scan on idx_messages_chat_id  (cost=0.00..4.68 rows=52 width=0) (actual time=0.017..0.017 rows=44 loops=1)
+                    Index Cond: (chat_id = 22556)
+                    Buffers: shared hit=2
+        ->  Memoize  (cost=0.43..8.46 rows=1 width=18) (actual time=0.026..0.026 rows=0 loops=34)
+              Cache Key: m.message_id
+              Cache Mode: logical
+              Hits: 0  Misses: 34  Evictions: 0  Overflows: 0  Memory Usage: 3kB
               Buffers: shared hit=135
+              ->  Index Scan using message_receipts_pkey on message_receipts r  (cost=0.42..8.45 rows=1 width=18) (actual time=0.025..0.025 rows=0 loops=34)
+                    Index Cond: ((message_id = m.message_id) AND (user_id = 965))
+                    Filter: (read_at IS NULL)
+                    Rows Removed by Filter: 1
+                    Buffers: shared hit=135
 Planning:
-  Buffers: shared hit=234
-Planning Time: 0.366 ms
-Execution Time: 4.464 ms
+  Buffers: shared hit=246
+Planning Time: 1.584 ms
+Execution Time: 1.726 ms

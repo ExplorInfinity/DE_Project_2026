@@ -1,45 +1,45 @@
 === R22 run 1 ===
-Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=8.262..8.264 rows=25 loops=1)
+Limit  (cost=3678.66..3679.58 rows=25 width=24) (actual time=7.995..7.997 rows=25 loops=1)
   Buffers: shared hit=1639
-  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.007..6.471 rows=100025 loops=1)
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.33 rows=120000 width=24) (actual time=0.007..6.252 rows=100025 loops=1)
         Buffers: shared hit=1639
 Planning:
-  Buffers: shared hit=85
-Planning Time: 0.160 ms
-Execution Time: 8.277 ms
+  Buffers: shared hit=97
+Planning Time: 0.179 ms
+Execution Time: 8.011 ms
 === R22 run 2 ===
-Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.980..7.982 rows=25 loops=1)
+Limit  (cost=3678.66..3679.58 rows=25 width=24) (actual time=7.889..7.891 rows=25 loops=1)
   Buffers: shared hit=1639
-  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.222 rows=100025 loops=1)
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.33 rows=120000 width=24) (actual time=0.006..6.155 rows=100025 loops=1)
         Buffers: shared hit=1639
 Planning:
-  Buffers: shared hit=85
-Planning Time: 0.159 ms
-Execution Time: 7.995 ms
+  Buffers: shared hit=97
+Planning Time: 0.169 ms
+Execution Time: 7.904 ms
 === R22 run 3 ===
-Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.832..7.834 rows=25 loops=1)
+Limit  (cost=3678.66..3679.58 rows=25 width=24) (actual time=7.851..7.853 rows=25 loops=1)
   Buffers: shared hit=1639
-  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.092 rows=100025 loops=1)
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.33 rows=120000 width=24) (actual time=0.006..6.115 rows=100025 loops=1)
         Buffers: shared hit=1639
 Planning:
-  Buffers: shared hit=85
-Planning Time: 0.154 ms
-Execution Time: 7.847 ms
+  Buffers: shared hit=97
+Planning Time: 0.170 ms
+Execution Time: 7.865 ms
 === R22 run 4 ===
-Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=7.919..7.921 rows=25 loops=1)
+Limit  (cost=3678.66..3679.58 rows=25 width=24) (actual time=8.063..8.066 rows=25 loops=1)
   Buffers: shared hit=1639
-  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.173 rows=100025 loops=1)
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.33 rows=120000 width=24) (actual time=0.005..6.290 rows=100025 loops=1)
         Buffers: shared hit=1639
 Planning:
-  Buffers: shared hit=85
-Planning Time: 0.158 ms
-Execution Time: 7.934 ms
+  Buffers: shared hit=97
+Planning Time: 0.171 ms
+Execution Time: 8.077 ms
 === R22 run 5 ===
-Limit  (cost=3678.70..3679.62 rows=25 width=24) (actual time=8.127..8.129 rows=25 loops=1)
+Limit  (cost=3678.66..3679.58 rows=25 width=24) (actual time=8.252..8.255 rows=25 loops=1)
   Buffers: shared hit=1639
-  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.38 rows=120000 width=24) (actual time=0.006..6.343 rows=100025 loops=1)
+  ->  Index Scan Backward using messages_pkey on messages  (cost=0.29..4414.33 rows=120000 width=24) (actual time=0.005..6.413 rows=100025 loops=1)
         Buffers: shared hit=1639
 Planning:
-  Buffers: shared hit=85
-Planning Time: 0.148 ms
-Execution Time: 8.142 ms
+  Buffers: shared hit=97
+Planning Time: 0.166 ms
+Execution Time: 8.266 ms
