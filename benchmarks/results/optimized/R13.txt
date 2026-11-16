@@ -1,0 +1,75 @@
+=== R13 run 1 ===
+Nested Loop Anti Join  (cost=0.29..3109.62 rows=2 width=36) (actual time=0.858..8.149 rows=7 loops=1)
+  Buffers: shared hit=1301 read=9
+  ->  Seq Scan on messages m  (cost=0.00..3091.00 rows=2 width=36) (actual time=0.519..7.295 rows=9 loops=1)
+        Filter: ((body ~~ '%?%'::text) AND (chat_id = 20501))
+        Rows Removed by Filter: 119991
+        Buffers: shared hit=1291
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.29..6.30 rows=1 width=4) (actual time=0.094..0.094 rows=0 loops=9)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Buffers: shared hit=10 read=9
+Planning:
+  Buffers: shared hit=186
+Planning Time: 0.297 ms
+Execution Time: 8.172 ms
+=== R13 run 2 ===
+Nested Loop Anti Join  (cost=0.29..3109.62 rows=2 width=36) (actual time=0.410..8.846 rows=7 loops=1)
+  Buffers: shared hit=1310
+  ->  Seq Scan on messages m  (cost=0.00..3091.00 rows=2 width=36) (actual time=0.407..8.829 rows=9 loops=1)
+        Filter: ((body ~~ '%?%'::text) AND (chat_id = 20501))
+        Rows Removed by Filter: 119991
+        Buffers: shared hit=1291
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.29..6.30 rows=1 width=4) (actual time=0.002..0.002 rows=0 loops=9)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Buffers: shared hit=19
+Planning:
+  Buffers: shared hit=186
+Planning Time: 0.264 ms
+Execution Time: 8.867 ms
+=== R13 run 3 ===
+Nested Loop Anti Join  (cost=0.29..3109.62 rows=2 width=36) (actual time=0.463..7.954 rows=7 loops=1)
+  Buffers: shared hit=1310
+  ->  Seq Scan on messages m  (cost=0.00..3091.00 rows=2 width=36) (actual time=0.460..7.938 rows=9 loops=1)
+        Filter: ((body ~~ '%?%'::text) AND (chat_id = 20501))
+        Rows Removed by Filter: 119991
+        Buffers: shared hit=1291
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.29..6.30 rows=1 width=4) (actual time=0.001..0.001 rows=0 loops=9)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Buffers: shared hit=19
+Planning:
+  Buffers: shared hit=186
+Planning Time: 0.317 ms
+Execution Time: 7.973 ms
+=== R13 run 4 ===
+Nested Loop Anti Join  (cost=0.29..3109.62 rows=2 width=36) (actual time=0.441..8.842 rows=7 loops=1)
+  Buffers: shared hit=1310
+  ->  Seq Scan on messages m  (cost=0.00..3091.00 rows=2 width=36) (actual time=0.438..8.820 rows=9 loops=1)
+        Filter: ((body ~~ '%?%'::text) AND (chat_id = 20501))
+        Rows Removed by Filter: 119991
+        Buffers: shared hit=1291
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.29..6.30 rows=1 width=4) (actual time=0.002..0.002 rows=0 loops=9)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Buffers: shared hit=19
+Planning:
+  Buffers: shared hit=186
+Planning Time: 0.259 ms
+Execution Time: 8.862 ms
+=== R13 run 5 ===
+Nested Loop Anti Join  (cost=0.29..3109.62 rows=2 width=36) (actual time=0.427..8.009 rows=7 loops=1)
+  Buffers: shared hit=1310
+  ->  Seq Scan on messages m  (cost=0.00..3091.00 rows=2 width=36) (actual time=0.424..7.989 rows=9 loops=1)
+        Filter: ((body ~~ '%?%'::text) AND (chat_id = 20501))
+        Rows Removed by Filter: 119991
+        Buffers: shared hit=1291
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.29..6.30 rows=1 width=4) (actual time=0.002..0.002 rows=0 loops=9)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Buffers: shared hit=19
+Planning:
+  Buffers: shared hit=186
+Planning Time: 0.271 ms
+Execution Time: 8.029 ms

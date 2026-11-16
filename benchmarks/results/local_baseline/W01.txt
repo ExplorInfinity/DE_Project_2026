@@ -1,0 +1,60 @@
+=== W01 run 1 ===
+Insert on messages  (cost=0.00..0.01 rows=0 width=0) (actual time=0.232..0.232 rows=0 loops=1)
+  Buffers: shared hit=42
+  ->  Result  (cost=0.00..0.01 rows=1 width=74) (actual time=0.001..0.001 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.038 ms
+Trigger for constraint fk_messages_chat: time=0.385 calls=1
+Trigger for constraint fk_messages_sender: time=0.264 calls=1
+Trigger for constraint fk_messages_media: time=0.021 calls=1
+Trigger for constraint fk_messages_reply: time=0.003 calls=1
+Execution Time: 0.944 ms
+=== W01 run 2 ===
+Insert on messages  (cost=0.00..0.01 rows=0 width=0) (actual time=0.206..0.206 rows=0 loops=1)
+  Buffers: shared hit=42
+  ->  Result  (cost=0.00..0.01 rows=1 width=74) (actual time=0.001..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.040 ms
+Trigger for constraint fk_messages_chat: time=0.377 calls=1
+Trigger for constraint fk_messages_sender: time=0.236 calls=1
+Trigger for constraint fk_messages_media: time=0.022 calls=1
+Trigger for constraint fk_messages_reply: time=0.003 calls=1
+Execution Time: 0.876 ms
+=== W01 run 3 ===
+Insert on messages  (cost=0.00..0.01 rows=0 width=0) (actual time=0.307..0.308 rows=0 loops=1)
+  Buffers: shared hit=42
+  ->  Result  (cost=0.00..0.01 rows=1 width=74) (actual time=0.002..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.066 ms
+Trigger for constraint fk_messages_chat: time=0.737 calls=1
+Trigger for constraint fk_messages_sender: time=0.386 calls=1
+Trigger for constraint fk_messages_media: time=0.037 calls=1
+Trigger for constraint fk_messages_reply: time=0.004 calls=1
+Execution Time: 1.522 ms
+=== W01 run 4 ===
+Insert on messages  (cost=0.00..0.01 rows=0 width=0) (actual time=0.304..0.305 rows=0 loops=1)
+  Buffers: shared hit=42
+  ->  Result  (cost=0.00..0.01 rows=1 width=74) (actual time=0.002..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.062 ms
+Trigger for constraint fk_messages_chat: time=0.611 calls=1
+Trigger for constraint fk_messages_sender: time=0.324 calls=1
+Trigger for constraint fk_messages_media: time=0.036 calls=1
+Trigger for constraint fk_messages_reply: time=0.004 calls=1
+Execution Time: 1.330 ms
+=== W01 run 5 ===
+Insert on messages  (cost=0.00..0.01 rows=0 width=0) (actual time=0.270..0.270 rows=0 loops=1)
+  Buffers: shared hit=42
+  ->  Result  (cost=0.00..0.01 rows=1 width=74) (actual time=0.002..0.002 rows=1 loops=1)
+Planning:
+  Buffers: shared hit=3
+Planning Time: 0.047 ms
+Trigger for constraint fk_messages_chat: time=0.563 calls=1
+Trigger for constraint fk_messages_sender: time=0.329 calls=1
+Trigger for constraint fk_messages_media: time=0.025 calls=1
+Trigger for constraint fk_messages_reply: time=0.003 calls=1
+Execution Time: 1.269 ms
