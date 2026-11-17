@@ -101,14 +101,14 @@ FROM calls c
 JOIN chat_members cm ON cm.chat_id = c.chat_id AND cm.user_id = 965
 WHERE c.status = 'MISSED'
   AND c.caller_id <> 965
-  AND EXTRACT(YEAR FROM c.started_at) >= 2025
+  AND c.started_at >= '2025-01-01'
 ORDER BY c.started_at DESC;
 
 -- @R12
 -- Spam detection: users who forwarded 2+ messages on the same day
 SELECT sender_id, sent_at::date AS day, count(*) AS forwarded
 FROM messages
-WHERE is_forwarded
+WHERE is_forwarded = TRUE
 GROUP BY sender_id, sent_at::date
 HAVING count(*) >= 2
 ORDER BY forwarded DESC, sender_id;
@@ -119,7 +119,12 @@ SELECT m.message_id, m.sender_id, m.sent_at, m.body
 FROM messages m
 WHERE m.chat_id = 20501
   AND m.body LIKE '%?%'
-  AND m.message_id NOT IN (SELECT r.reply_to_message_id FROM messages r);
+  AND NOT EXISTS (
+      SELECT 1
+      FROM messages r
+      WHERE r.reply_to_message_id = m.message_id
+    );
+
 
 -- @R14
 -- Engagement: 10 groups with the most distinct senders in June 2026
