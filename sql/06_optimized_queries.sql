@@ -197,11 +197,16 @@ ORDER BY messages DESC;
 
 -- @R22
 -- Trust & safety console: all messages, newest first, page 4,001 (25 per page)
-SELECT message_id, chat_id, sender_id, message_type, sent_at
-FROM messages
-ORDER BY message_id DESC
-OFFSET 100000
-LIMIT 25;
+SELECT m.message_id, m.chat_id, m.sender_id, m.message_type, m.sent_at
+FROM (
+    SELECT message_id
+    FROM messages
+    ORDER BY message_id DESC
+    OFFSET 100000
+    LIMIT 25
+) sub
+JOIN messages m ON m.message_id = sub.message_id
+ORDER BY m.message_id DESC;
 
 -- @R23
 -- Security: linked WEB/DESKTOP devices unused since 1 June 2026 (to auto log out)
@@ -240,11 +245,13 @@ VALUES (90000001, 22556, 965, '2026-07-01 09:00:00+05:30', 'TEXT', 'Good morning
 UPDATE message_receipts r
 SET read_at = TIMESTAMPTZ '2026-07-01 09:05:00+05:30',
     delivered_at = coalesce(r.delivered_at, TIMESTAMPTZ '2026-07-01 09:05:00+05:30')
-FROM messages m
-WHERE m.message_id = r.message_id
-  AND m.chat_id = 22556
-  AND r.user_id = 965
-  AND r.read_at IS NULL;
+WHERE r.user_id = 965
+  AND r.read_at IS NULL
+  AND r.message_id IN (
+      SELECT m.message_id
+      FROM messages m
+      WHERE m.chat_id = 22556
+  );
 
 -- @W03
 -- "Delete for everyone" on message 119989
