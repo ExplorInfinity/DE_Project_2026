@@ -1,0 +1,85 @@
+=== R10 run 1 ===
+GroupAggregate  (cost=672.65..820.43 rows=6568 width=20) (actual time=2.369..3.241 rows=30.00 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=11 read=25
+  ->  Sort  (cost=672.65..689.07 rows=6568 width=8) (actual time=2.328..2.645 rows=6593.00 loops=1)
+        Sort Key: ((sent_at)::date), sender_id
+        Sort Method: quicksort  Memory: 347kB
+        Buffers: shared hit=11 read=25
+        ->  Index Only Scan using idx_messages_sent_at on messages  (cost=0.42..256.20 rows=6568 width=8) (actual time=0.225..1.008 rows=6593.00 loops=1)
+              Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=5 read=25
+Planning:
+  Buffers: shared hit=265
+Planning Time: 0.423 ms
+Execution Time: 3.272 ms
+=== R10 run 2 ===
+GroupAggregate  (cost=672.65..820.43 rows=6568 width=20) (actual time=2.683..3.562 rows=30.00 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=36
+  ->  Sort  (cost=672.65..689.07 rows=6568 width=8) (actual time=2.630..2.908 rows=6593.00 loops=1)
+        Sort Key: ((sent_at)::date), sender_id
+        Sort Method: quicksort  Memory: 347kB
+        Buffers: shared hit=36
+        ->  Index Only Scan using idx_messages_sent_at on messages  (cost=0.42..256.20 rows=6568 width=8) (actual time=0.021..1.063 rows=6593.00 loops=1)
+              Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=30
+Planning:
+  Buffers: shared hit=265
+Planning Time: 1.546 ms
+Execution Time: 3.674 ms
+=== R10 run 3 ===
+GroupAggregate  (cost=672.65..820.43 rows=6568 width=20) (actual time=2.873..3.868 rows=30.00 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=36
+  ->  Sort  (cost=672.65..689.07 rows=6568 width=8) (actual time=2.816..3.127 rows=6593.00 loops=1)
+        Sort Key: ((sent_at)::date), sender_id
+        Sort Method: quicksort  Memory: 347kB
+        Buffers: shared hit=36
+        ->  Index Only Scan using idx_messages_sent_at on messages  (cost=0.42..256.20 rows=6568 width=8) (actual time=0.019..1.157 rows=6593.00 loops=1)
+              Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=30
+Planning:
+  Buffers: shared hit=265
+Planning Time: 1.247 ms
+Execution Time: 3.961 ms
+=== R10 run 4 ===
+GroupAggregate  (cost=672.65..820.43 rows=6568 width=20) (actual time=2.659..3.577 rows=30.00 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=36
+  ->  Sort  (cost=672.65..689.07 rows=6568 width=8) (actual time=2.603..2.909 rows=6593.00 loops=1)
+        Sort Key: ((sent_at)::date), sender_id
+        Sort Method: quicksort  Memory: 347kB
+        Buffers: shared hit=36
+        ->  Index Only Scan using idx_messages_sent_at on messages  (cost=0.42..256.20 rows=6568 width=8) (actual time=0.016..1.069 rows=6593.00 loops=1)
+              Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=30
+Planning:
+  Buffers: shared hit=265
+Planning Time: 1.480 ms
+Execution Time: 3.694 ms
+=== R10 run 5 ===
+GroupAggregate  (cost=672.65..820.43 rows=6568 width=20) (actual time=3.028..3.986 rows=30.00 loops=1)
+  Group Key: ((sent_at)::date)
+  Buffers: shared hit=36
+  ->  Sort  (cost=672.65..689.07 rows=6568 width=8) (actual time=2.963..3.249 rows=6593.00 loops=1)
+        Sort Key: ((sent_at)::date), sender_id
+        Sort Method: quicksort  Memory: 347kB
+        Buffers: shared hit=36
+        ->  Index Only Scan using idx_messages_sent_at on messages  (cost=0.42..256.20 rows=6568 width=8) (actual time=0.024..1.235 rows=6593.00 loops=1)
+              Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=30
+Planning:
+  Buffers: shared hit=265
+Planning Time: 1.305 ms
+Execution Time: 4.104 ms

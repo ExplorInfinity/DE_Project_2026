@@ -1,341 +1,146 @@
 # Phase 4 — Query Optimization Report
 
-## 1. Overview & Team Allocation
+## 1. Method
 
-This report documents the performance analysis, query rewriting, and indexing optimizations for Phase 4 (Checkpoint 3) of the DBMS Course Project on the WhatsApp messaging workload.
+The original workload in `queries/workload_30.sql` was benchmarked against the baseline database with only primary-key and UNIQUE-constraint indexes. The optimized workload in `sql/06_optimized_queries.sql` was benchmarked after running `sql/05_indexes.sql` and `ANALYZE`.
 
-### Team Allocation of Queries
+Every query used `EXPLAIN (ANALYZE, BUFFERS)`. The baseline run used three repetitions; the optimized run used five repetitions as specified in the Phase 4 instructions. Write queries were executed inside `BEGIN; ... ROLLBACK;`. Timings below are the `avg_ms` values from the two generated `summary.csv` files.
 
-To ensure modularity and avoid git conflicts, the workload of 25 read queries (R01–R25) and 5 write queries (W01–W05) was divided among team members:
-* **Adarsh Balu:** Read queries **R01–R20** (user onboarding, direct messaging, chat screens, receipt delivery, growth, and group statistics).
-* **Ramit Layek (This Report):** Read queries **R20–R25** (capacity planning, product analytics, deep pagination, device cleanup, deduplication, and recursive thread traversal) and Write queries **W01–W05** (message sending, batch read receipts, message deletion, broadcast delivery, and group membership updates).
-* **Aditya Singla:** Project coordination, schema verification, and final end-to-end benchmark aggregation.
+The raw plans are preserved in:
 
-The baseline workload file `queries/workload_30.sql` was preserved unchanged. All optimized queries are maintained in `sql/06_optimized_queries.sql`, and all tuning indexes and extended statistics are defined in `sql/05_indexes.sql`.
+- `benchmarks/results/baseline/`
+- `benchmarks/results/optimized/`
 
----
+## 2. Optimization results
 
-## 2. Read Workload Optimization (R20–R25)
+Improvement is calculated as `(before - after) / before * 100`. A negative value means the optimized run was slower; on this small, cached dataset that can be measurement noise or index overhead.
 
-### 2.1 R20 — Hourly Message Distribution (Capacity Planning)
+| Query | Before (ms) | Problem / plan observation | Optimization applied | After (ms) | Improvement | Same result? |
+|---|---:|---|---|---:|---:|:---:|
+| R01 | 25.225 | Latest message lookup repeatedly scanned `messages`. | `idx_chat_members_user_chat` and `idx_messages_chat_id_sent_at`. | 0.686 | 97.3% | ✅ |
+| R02 | 4.570 | Chat filter used a sequential scan on `messages`. | `idx_messages_chat_id` narrows the chat before sorting. | 0.551 | 87.9% | ✅ |
+| R03 | 32.226 | Unread receipts were found with a sequential scan. | Partial `idx_message_receipts_user_id` for unread receipts. | 0.713 | 97.8% | ✅ |
+| R04 | 22.270 | Membership was selective, but message search still examined message rows. | `idx_chat_members_user_chat` and chat lookup index; the planner retained a bitmap message lookup on this small dataset. | 0.688 | 96.9% | ✅ |
+| R05 | 0.022 | Already an exact UNIQUE-index lookup. | No change. | 0.105 | -377.3% | ✅ |
+| R06 | 3.149 | Direct-chat membership lookup needed a supporting user-first index. | `idx_chat_members_user_chat`. | 0.536 | 83.0% | ✅ |
+| R07 | 0.636 | Already selective through `chat_members_pkey`; no extra tuning index was needed. | No query/index change. | 0.361 | 43.2% | ✅ |
+| R08 | 24.510 | Undelivered receipts and message time had no supporting access path. | `idx_messages_sent_at` and partial undelivered-receipt index. | 14.524 | 40.7% | ✅ |
+| R09 | 11.561 | Aggregates most of `media`; a sequential scan is appropriate. | No change. | 14.023 | -21.3% | ✅ |
+| R10 | 10.408 | `sent_at::date` prevented a timestamp range scan. | Replaced the cast predicate with a half-open June timestamp range and added `idx_messages_sent_at`. | 3.741 | 64.1% | ✅ |
+| R11 | 7.444 | Year extraction prevented a direct time predicate; calls lacked a selective partial index. | Replaced it with `started_at >=` and added a partial missed-call index. | 0.454 | 93.9% | ✅ |
+| R12 | 8.347 | Forwarded rows were grouped after scanning all messages. | Partial `(sender_id, sent_at)` index for forwarded messages. | 5.567 | 33.3% | ✅ |
+| R13 | 26.130 | `NOT IN` was incorrect because `reply_to_message_id` contains NULLs. | Replaced it with correlated `NOT EXISTS`; added question and reply-target indexes. | 0.571 | 97.8% | ✅* |
+| R14 | 7.160 | June rows are aggregated across much of `messages`; `chats` is small. | `idx_messages_sent_at` supports the date range. | 7.909 | -10.5% | ✅ |
+| R15 | 0.035 | Already an exact composite primary-key lookup. | No change. | 0.079 | -125.7% | ✅ |
+| R16 | 0.262 | Message receipt and user primary keys already make the lookup selective. | No change. | 0.303 | -15.6% | ✅ |
+| R17 | 28.049 | Large receipt/message join and aggregation; receipts still require a broad scan. | Timestamp index helps the message side, but the receipt scan remains necessary. | 22.553 | 19.6% | ✅ |
+| R18 | 19.488 | Broad user, membership, and group existence checks. | No selective single-table access path was justified for this dataset. | 15.220 | 21.9% | ✅ |
+| R19 | 14,565.326 | Two correlated subqueries scanned all `messages` once per group. | `idx_messages_chat_id_sent_at` makes both per-group aggregates index-only. | 6.653 | 100.0% | ✅ |
+| R20 | 38.850 | Planner estimated too many groups and used an external merge sort. | Extended statistics on hour expression and `message_type` enable in-memory `HashAggregate`. | 21.638 | 44.3% | ✅ |
+| R21 | 10.986 | Aggregate reads the whole message table; an index would add write cost without avoiding the scan. | No change. | 10.520 | 4.2% | ✅ |
+| R22 | 8.674 | Deep OFFSET discarded 100,000 rows after fetching projected columns. | Deferred join: scan only primary keys for the OFFSET, then fetch 25 rows. | 5.413 | 37.6% | ✅ |
+| R23 | 3.539 | Stale-device predicate used a sequential scan and sort. | Partial covering index on `last_active_at` for WEB/DESKTOP devices. | 0.992 | 72.0% | ✅ |
+| R24 | 10.092 | Duplicate detection aggregates nearly all `media`; sequential scan is appropriate. | No change. | 15.761 | -56.2% | ✅ |
+| R25 | 0.199 | Recursive steps already use `messages_pkey`. | No change. | 0.240 | -20.6% | ✅ |
+| W01 | 2.962 | Small insert; no scan bottleneck. | No query rewrite. | 4.855 | -63.9% | ✅ |
+| W02 | 11.968 | Original plan scanned all messages to find the target chat. | Reordered the update around selective unread receipts and message primary-key lookups. | 1.433 | 88.0% | ✅ |
+| W03 | 0.391 | Single-row primary-key update was already selective. | No change. | 2.746 | -602.3% | ✅ |
+| W04 | 37.974 | Cost is dominated by inserting 5,000 rows, FK checks, and the conflict check. | No query rewrite; avoided unnecessary full secondary indexes on receipts. | 37.452 | 1.4% | ✅ |
+| W05 | 0.128 | Composite primary key directly locates the membership row. | No change. | 0.130 | -1.6% | ✅ |
+| **Total of query averages** | **14,922.581** |  |  | **196.417** | **98.7%** |  |
 
-**Original Query:**
+`*` R13 is equivalent to the intended business question, but not to the faulty original result. The original query can return no rows because `NOT IN` becomes UNKNOWN when its subquery contains NULL.
+
+## 3. Important plan findings
+
+### R19 — largest improvement
+
+The baseline plan performed two sequential scans of the 120,000-row `messages` table for each of 3,000 groups, producing about 7.8 million shared-buffer hits and an average of 14,565.326 ms. After `idx_messages_chat_id_sent_at`, both correlated aggregates use index-only scans. The optimized average is 6.653 ms.
+
+### R13 — correctness and performance fix
+
+The original predicate was:
+
 ```sql
-SELECT EXTRACT(HOUR FROM sent_at) AS hour, message_type, count(*) AS messages
-FROM messages
-GROUP BY 1, 2
-ORDER BY 1, 2;
-```
-
-**Bottleneck Analysis:**
-* The messages table contains 120,000 rows.
-* In the baseline plan, PostgreSQL performs a sequential scan of `messages` followed by a sort on `(EXTRACT(hour FROM sent_at), message_type)` and a `GroupAggregate`.
-* Because `sent_at` is a timestamp with time zone, the query planner lacks cross-column distribution statistics for the `EXTRACT(hour FROM ...)` expression combined with `message_type`.
-* The planner estimated **120,000 distinct groups**, assuming nearly every row produced a unique group. Consequently, it assumed an in-memory hash table would exceed `work_mem`, choosing an **external merge disk sort**:
-  ```
-  Sort Key: (EXTRACT(hour FROM sent_at)), message_type
-  Sort Method: external merge  Disk: 2576kB
-  Buffers: shared hit=1299, temp read=322 written=324
-  ```
-* This spilled over 2.5 MB of temporary data to disk, causing high disk I/O and latency (~45–80 ms).
-
-**Optimization:**
-* Created extended multivariate statistics on the expression and column:
-  ```sql
-  CREATE STATISTICS IF NOT EXISTS stats_messages_hour_type
-  ON (EXTRACT(HOUR FROM sent_at)), message_type
-  FROM messages;
-  ```
-* With this statistic in place, PostgreSQL discovers the true cardinality is at most **144 distinct groups** (24 hours × 6 message types).
-* The planner immediately switches to an in-memory **HashAggregate** (48 kB memory usage), followed by a quicksort of only 144 rows (33 kB memory).
-* **Impact:** 100% elimination of disk spills (`temp read=0 written=0`), reducing execution cost from `18897.60` down to `3698.32`.
-
----
-
-### 2.2 R21 — Share of Edited and Deleted Messages
-
-**Original Query:**
-```sql
-SELECT message_type,
-       count(*) AS messages,
-       round(100.0 * count(*) FILTER (WHERE edited_at IS NOT NULL) / count(*), 2) AS edited_pct,
-       round(100.0 * count(*) FILTER (WHERE is_deleted) / count(*), 2) AS deleted_pct
-FROM messages
-GROUP BY message_type
-ORDER BY messages DESC;
-```
-
-**Analysis & Decision:**
-* The query scans all 120,000 messages to aggregate edit and deletion rates across message types.
-* The baseline execution uses a sequential scan (1,291 buffer hits) followed by an in-memory `HashAggregate` (24 kB memory) and a quicksort of 6 rows (25 kB memory), executing in ~11 ms.
-* Creating a covering index on `(message_type) INCLUDE (edited_at, is_deleted)` would occupy ~5–7 MB of storage and would need to be updated on every single message insert (W01) and deletion (W03).
-* Because a sequential scan over 1,291 cached pages is already fast, adding index maintenance overhead would significantly penalize write performance for negligible read benefit.
-* **Decision:** Retained as-is with no index overhead.
-
----
-
-### 2.3 R22 — Trust & Safety Console Deep Pagination
-
-**Original Query:**
-```sql
-SELECT message_id, chat_id, sender_id, message_type, sent_at
-FROM messages
-ORDER BY message_id DESC
-OFFSET 100000
-LIMIT 25;
-```
-
-**Bottleneck Analysis:**
-* In baseline execution, PostgreSQL uses a backward index scan on `messages_pkey`.
-* However, because the query projects `chat_id, sender_id, message_type, sent_at`, PostgreSQL must visit the table heap for **every single one of the 100,025 traversed rows** just to discard 100,000 rows.
-* This caused **100,025 heap visits** and **1,639 shared buffer hits**, resulting in unnecessary memory bandwidth consumption.
-
-**Optimization (Deferred Join / Late Row Lookup):**
-* Rewrote the query using the **Deferred Join** pattern:
-  ```sql
-  SELECT m.message_id, m.chat_id, m.sender_id, m.message_type, m.sent_at
-  FROM (
-      SELECT message_id
-      FROM messages
-      ORDER BY message_id DESC
-      OFFSET 100000
-      LIMIT 25
-  ) sub
-  JOIN messages m ON m.message_id = sub.message_id
-  ORDER BY m.message_id DESC;
-  ```
-* **Execution Plan Difference:**
-  * The inner subquery requires only `message_id`. Since `message_id` is the primary key, PostgreSQL satisfies the 100,000 row offset entirely via an **Index-Only Scan** on `messages_pkey` without reading the message heap.
-  * Only the final 25 matching keys are joined back to `messages` via nested loop index scans to fetch the remaining columns.
-* **Performance Impact:**
-  * Shared buffer hits dropped from **1,639 to 352** (a **78.5% reduction** in buffer reads).
-  * Execution time was reduced from ~30 ms down to ~12–13 ms.
-  * Correctness was verified via two-way `EXCEPT ALL` tests returning 0 differing rows.
-
----
-
-### 2.4 R23 — Stale Web and Desktop Device Cleanup
-
-**Original Query:**
-```sql
-SELECT d.device_id, d.user_id, d.device_type, d.last_active_at
-FROM devices d
-WHERE d.device_type IN ('WEB', 'DESKTOP')
-  AND d.last_active_at < '2026-06-01'
-ORDER BY d.last_active_at;
-```
-
-**Bottleneck Analysis:**
-* The devices table contains 24,000 devices.
-* Without a supporting index, PostgreSQL performed a full sequential scan of `devices`, filtered for device types and dates, and performed an in-memory quicksort on the matching rows (~3.54 ms baseline average).
-
-**Optimization (Partial Covering Index):**
-* Created a partial covering B-tree index tailored to the query predicate and projection:
-  ```sql
-  CREATE INDEX IF NOT EXISTS idx_devices_inactive_web_desktop
-  ON devices (last_active_at)
-  INCLUDE (device_id, user_id, device_type)
-  WHERE device_type IN ('WEB', 'DESKTOP');
-  ```
-* **Why this design:**
-  * `WHERE device_type IN ('WEB', 'DESKTOP')`: Keeps the index partial and compact (only 496 kB), excluding mobile devices.
-  * Key column `last_active_at`: Provides direct range filtering and outputs rows in sorted order, eliminating the explicit sort step.
-  * `INCLUDE (device_id, user_id, device_type)`: Satisfies all projected columns directly from the index.
-* **Performance Impact:**
-  * The execution plan switched from `Seq Scan + Sort` to a pure **Index Only Scan**.
-  * Heap fetches dropped to **0**.
-  * Shared buffer hits decreased from 353 to **37** (89.5% reduction).
-  * Average execution time dropped from 3.539 ms to **0.483 ms (~86% speedup)**.
-
----
-
-### 2.5 R24 — Duplicate Media Files by SHA-256
-
-**Original Query:**
-```sql
-SELECT sha256, count(*) AS copies, sum(size_bytes) AS total_bytes
-FROM media
-GROUP BY sha256
-HAVING count(*) > 1
-ORDER BY copies DESC;
-```
-
-**Analysis & Decision:**
-* The `media` table contains 27,634 rows stored across only 454 disk blocks (3.5 MB).
-* Baseline execution uses a sequential scan (454 buffer hits) and a `HashAggregate` to find the 48 duplicate hashes out of 24,371 distinct values, completing in ~9 ms.
-* Because `sha256` is a 64-character hexadecimal text column, a B-tree index on `(sha256, size_bytes)` would consume ~2.5–3.5 MB (nearly equal to the size of the table). An index scan would require reading index blocks followed by table blocks, which offers no benefit over streaming 454 sequential heap blocks from RAM cache.
-* **Decision:** Preserved baseline plan as optimal.
-
----
-
-### 2.6 R25 — Recursive Reply Thread Traversal
-
-**Original Query:**
-```sql
-WITH RECURSIVE thread AS (
-    SELECT message_id, reply_to_message_id, sender_id, body, 0 AS depth
-    FROM messages WHERE message_id = 119989
-    UNION ALL
-    SELECT m.message_id, m.reply_to_message_id, m.sender_id, m.body, t.depth + 1
-    FROM messages m JOIN thread t ON m.message_id = t.reply_to_message_id
+AND m.message_id NOT IN (
+    SELECT r.reply_to_message_id FROM messages r
 )
-SELECT * FROM thread ORDER BY depth DESC;
 ```
 
-**Analysis & Decision:**
-* The anchor member looks up message 119989 using `messages_pkey` (Index Scan, 3 buffer hits).
-* Each recursive iteration looks up the parent message using `messages_pkey` (`message_id = t.reply_to_message_id`).
-* With depth 3, the entire query executes in **~0.19 ms** and hits only 12 shared buffers.
-* **Decision:** Already highly optimized via the existing primary key index.
-
----
-
-## 3. Write Workload Optimization & Trade-Offs (W01–W05)
-
-### 3.1 W01 — Insert Message in Group 22556
+Because non-reply messages have `reply_to_message_id IS NULL`, `NOT IN` is not safe here. The optimized query uses:
 
 ```sql
-INSERT INTO messages (message_id, chat_id, sender_id, sent_at, message_type, body)
-VALUES (90000001, 22556, 965, '2026-07-01 09:00:00+05:30', 'TEXT', 'Good morning everyone');
+AND NOT EXISTS (
+    SELECT 1
+    FROM messages r
+    WHERE r.reply_to_message_id = m.message_id
+)
 ```
 
-**Analysis & Indexing Overhead:**
-* Inserting a message requires checking 4 foreign key constraints:
-  * `fk_messages_chat` on `chats(chat_id)`
-  * `fk_messages_sender` on `users(user_id)`
-  * `fk_messages_media` (NULL, skipped)
-  * `fk_messages_reply` (NULL, skipped)
-* In addition, every new index defined on the `messages` table must be updated on insert.
-* Baseline insert execution time was ~1.19 ms. Adding excessive indexes on `messages` directly degrades insert throughput.
-* **Design Precaution:** For Phase 4, we avoided adding unnecessary secondary indexes on `messages`. For example, our R20 optimization used **extended statistics** instead of an index, adding **zero insert maintenance overhead** to W01.
+The partial question index reduces the candidate rows for group 20501, and `idx_messages_reply_to` makes the anti-lookup index-only.
 
----
+### R20 — statistics, not a forced scan setting
 
-### 3.2 W02 — Mark Unread Group Messages as Read
+The baseline plan used `GroupAggregate` plus an external merge sort with approximately 2.5 MB of temporary disk data. `stats_messages_hour_type` teaches the planner that the result has at most 144 hour/type groups. The optimized plan uses in-memory `HashAggregate` and a small quicksort while still correctly scanning the message table once.
 
-**Original Query:**
-```sql
-UPDATE message_receipts r
-SET read_at = TIMESTAMPTZ '2026-07-01 09:05:00+05:30',
-    delivered_at = coalesce(r.delivered_at, TIMESTAMPTZ '2026-07-01 09:05:00+05:30')
-FROM messages m
-WHERE m.message_id = r.message_id
-  AND m.chat_id = 22556
-  AND r.user_id = 965
-  AND r.read_at IS NULL;
-```
+### R22 — deep pagination
 
-**Bottleneck Analysis:**
-* In the baseline database, locating messages for group 22556 required a **full sequential scan of all 120,000 rows** in `messages`.
-* Baseline execution time averaged **11.968 ms** (or 8.852 ms in 5-run tests), reading 1,291 message heap blocks.
+The optimized query first obtains only 25 primary keys after the OFFSET using an index-only scan, then joins those keys back to `messages`. This reduces heap work while preserving the original ordering and projected columns.
 
-**Optimization (Index + Sargable Rewrite):**
-* Supported by the B-tree index on `messages(chat_id)` / `messages(chat_id, sent_at DESC)`.
-* Rewrote the update using an explicit subquery:
-  ```sql
-  UPDATE message_receipts r
-  SET read_at = TIMESTAMPTZ '2026-07-01 09:05:00+05:30',
-      delivered_at = coalesce(r.delivered_at, TIMESTAMPTZ '2026-07-01 09:05:00+05:30')
-  WHERE r.user_id = 965
-    AND r.read_at IS NULL
-    AND r.message_id IN (
-        SELECT m.message_id
-        FROM messages m
-        WHERE m.chat_id = 22556
-    );
-  ```
-* **Performance Impact:**
-  * Avoids scanning 120,000 message rows; uses a Bitmap Index Scan on `idx_messages_chat_id` and an index scan on `message_receipts(user_id) WHERE read_at IS NULL`.
-  * Execution time dropped from 11.968 ms to **0.85 ms (>92% improvement)**.
-  * Correctness confirmed: updates exactly 14 unread message receipts.
+### R23 — covering partial index
 
----
+The optimized plan uses `Index Only Scan using idx_devices_inactive_web_desktop` with zero heap fetches in the captured plans. The partial predicate excludes non-WEB/DESKTOP devices, and the key order supplies the requested `last_active_at` ordering.
 
-### 3.3 W03 — Delete Message for Everyone
+### W02 — write optimization
+
+The optimized plan starts with the partial unread-receipt index for `user_id = 965`, then checks the related messages by primary key. It updates the same 14 qualifying receipts as the original predicate while reducing the average from 11.968 ms to 1.433 ms.
+
+## 4. Indexes and statistics added
+
+All tuning objects are defined in `sql/05_indexes.sql`. R07 deliberately uses the existing `chat_members_pkey`; it does not depend on an undeclared `idx_chat_members_current_group` index.
+
+| Object | Type | Definition / purpose | Queries |
+|---|---|---|---|
+| `idx_messages_chat_id_sent_at` | B-tree | `(chat_id, sent_at DESC)` for per-chat latest/history lookups | R01, R02, R19 |
+| `idx_message_receipts_user_id` | Partial B-tree | `(user_id) WHERE read_at IS NULL` | R03, W02 |
+| `idx_messages_body_trgm` | GIN trigram | Supports substring search on `body` when selected by the planner | R04 |
+| `idx_chat_members_user_chat` | B-tree | `(user_id, chat_id)` for user-first membership joins | R04, R06, R11 |
+| `idx_messages_receipts_undelivered_msg` | Partial covering B-tree | `(message_id) INCLUDE (user_id) WHERE delivered_at IS NULL` | R08 |
+| `idx_messages_sent_at` | Covering B-tree | `(sent_at) INCLUDE (sender_id)` for timestamp ranges | R08, R10, R14, R17 |
+| `idx_calls_missed_chat_time` | Partial covering B-tree | Missed calls keyed by `(chat_id, started_at DESC)` | R11 |
+| `idx_messages_forwarded_sender_time` | Partial B-tree | `(sender_id, sent_at) WHERE is_forwarded` | R12 |
+| `idx_messages_chat_questions` | Partial B-tree | `(chat_id) WHERE body LIKE '%?%'` | R13 |
+| `idx_messages_reply_to` | Partial B-tree | `(reply_to_message_id) WHERE reply_to_message_id IS NOT NULL` | R13 |
+| `stats_messages_hour_type` | Extended statistics | Hour expression plus `message_type` cardinality | R20 |
+| `idx_devices_inactive_web_desktop` | Partial covering B-tree | `last_active_at` plus projected columns for WEB/DESKTOP | R23 |
+| `idx_messages_chat_id` | B-tree | `(chat_id)` for chat-membership message filtering | R02, R04, W02 |
+
+To record environment-specific index sizes in the report, run this in the same benchmark database after applying `sql/05_indexes.sql`:
 
 ```sql
-UPDATE messages
-SET is_deleted = TRUE, body = NULL, media_id = NULL
-WHERE message_id = 119989;
+SELECT schemaname,
+       indexname,
+       pg_size_pretty(pg_relation_size(indexname::regclass)) AS index_size
+FROM pg_indexes
+WHERE schemaname = 'whatsapp'
+  AND indexname LIKE 'idx\_%' ESCAPE '\'
+ORDER BY indexname;
 ```
 
-**Analysis:**
-* Targets a single message by primary key.
-* The plan performs an Index Scan on `messages_pkey` (3 shared buffer hits) and updates the tuple in-place.
-* Execution time is **~0.28 ms**.
-* Because our added indexes do not index `body` or `is_deleted` as B-tree keys, this update does not incur secondary index re-indexing.
+The benchmark `summary.csv` files record execution times and scan nodes, but not `pg_relation_size`; sizes should therefore be copied from this database query rather than invented from plan output.
 
----
+## 5. Correctness notes
 
-### 3.4 W04 — Broadcast Delivery Receipt Batch Insert
+- The original workload file was not modified.
+- R10 changes a function-wrapped date filter to a half-open timestamp range for June 2026.
+- R11 changes `EXTRACT(YEAR FROM started_at) >= 2025` to the equivalent timestamp lower bound.
+- R13 uses `NOT EXISTS` to implement the intended unanswered-question semantics safely with NULLs.
+- R22 preserves the unique `message_id DESC` ordering by fetching the same offset keys before joining back.
+- W02 preserves the original update conditions and timestamp assignments; only the access path and predicate shape were changed.
+- All write benchmarks use rollback, so benchmark execution does not permanently alter the seed data.
 
-```sql
-INSERT INTO message_receipts (message_id, user_id)
-SELECT 1, g
-FROM generate_series(2, 5001) AS g
-ON CONFLICT (message_id, user_id) DO NOTHING;
-```
+## 6. Queries intentionally left as sequential scans
 
-**Analysis & Write Concurrency Trade-Off:**
-* Inserts 5,000 receipts in a single statement.
-* Baseline execution takes ~34–38 ms.
-* Breakdown of execution cost:
-  * Foreign key trigger `fk_receipts_message`: verified 5,000 times against message 1.
-  * Foreign key trigger `fk_receipts_user`: verified 5,000 times against `users(user_id)`.
-  * Index insertion into `message_receipts_pkey` for 5,000 rows.
-* **Crucial Architectural Lesson:** If a full secondary index were added on `message_receipts(message_id, delivered_at, read_at)`, W04 would be forced to perform an additional 5,000 B-tree index page writes. By ensuring any receipt index is strictly partial (e.g., `WHERE read_at IS NULL` or `WHERE delivered_at IS NULL`), we protect bulk broadcast ingestion performance.
+R09, R14, R17, R18, R20, R21, and R24 still read a substantial share of their input tables or perform broad aggregation. Adding indexes would not remove the need to process most rows and would add storage and write-maintenance cost. R05, R15, R16, R25, W01, W03, and W05 were already primary-key/UNIQUE-key or small single-row operations; their negative percentage changes are normal cached-run variance and are not evidence of a correctness problem.
 
----
-
-### 3.5 W05 — User Leaves Group
-
-```sql
-UPDATE chat_members
-SET left_at = TIMESTAMPTZ '2026-07-01 10:00:00+05:30'
-WHERE chat_id = 20898 AND user_id = 965 AND left_at IS NULL;
-```
-
-**Analysis:**
-* Direct update on `chat_members` using the composite primary key `(chat_id, user_id)`.
-* Plan uses an Index Scan on `chat_members_pkey`, executing in **~0.12 ms**.
-* Retained as optimal.
-
----
-
-## 4. Summary of Index & Statistics Additions
-
-The table below summarizes the indexes and statistics added in `sql/05_indexes.sql` specifically supporting this workload:
-
-| Object Name | Object Type | Target Table / Columns | Supported Queries | Storage Size | Rationale |
-|---|---|---|---|---:|---|
-| `idx_devices_inactive_web_desktop` | Partial Covering Index | `devices (last_active_at) INCLUDE (...) WHERE device_type IN ('WEB', 'DESKTOP')` | R23 | 496 kB | Provides pre-sorted index-only scan with 0 heap fetches for inactive device cleanup. |
-| `idx_messages_chat_id` | B-tree Index | `messages (chat_id)` | W02 (and chat reads) | 1,304 kB | Accelerates chat message lookups and prevents 120,000-row table scans during unread updates. |
-| `stats_messages_hour_type` | Multivariate Extended Statistics | `messages ((EXTRACT(HOUR FROM sent_at)), message_type)` | R20 | ~8 kB | Fixes planner cardinality estimation from 120,000 to 144, replacing external disk sort with in-memory HashAggregate. Zero write penalty. |
-
----
-
-## 5. Correctness Verification
-
-All query rewrites were verified for strict semantic equivalence against the baseline database:
-
-1. **R22 (Late Row Lookup Pagination):**
-   * Verified by running a two-way `EXCEPT ALL` comparison between the baseline `OFFSET 100000 LIMIT 25` query and the optimized deferred join query:
-     ```sql
-     ( <baseline_query> ) EXCEPT ALL ( <optimized_query> );  -- Returns 0 rows
-     ( <optimized_query> ) EXCEPT ALL ( <baseline_query> );  -- Returns 0 rows
-     ```
-   * Result: Exactly 0 differing rows. The 25 messages, order, and projected attributes match 100%.
-
-2. **W02 (Targeted Unread Receipt Update):**
-   * Tested inside `BEGIN ... ROLLBACK` transactions using `RETURNING`:
-     * Baseline update affected rows: **14**
-     * Optimized update affected rows: **14**
-   * The updated message IDs and timestamp modifications are identical.
-
----
-
-## 6. Conclusion & Next Steps
-
-* **Read Workload (R20–R25):** Major wins achieved in **R22** (78.5% buffer reduction via deferred joins), **R23** (86% speedup via partial covering index), and **R20** (elimination of 2.5 MB disk spills via extended statistics). R21, R24, and R25 were verified as optimal without bloating storage.
-* **Write Workload (W01–W05):** **W02** execution time dropped by >92% (from ~12 ms to 0.85 ms). Write overhead on W01 and W04 was protected by avoiding unnecessary secondary indexes on `messages` and `message_receipts`.
-* **Team Coordination:** The work on R20–R25 and W01–W05 is complete, isolated, and tested. Once Adarsh pushes his completed batch for R01–R20, the team will execute the complete 30-query benchmark suite (`./benchmarks/run_benchmark.sh`) to produce the unified summary report.
+The optimized artifact set is complete: `summary.csv` plus `R01.txt`–`R25.txt` and `W01.txt`–`W05.txt` in `benchmarks/results/optimized/`.

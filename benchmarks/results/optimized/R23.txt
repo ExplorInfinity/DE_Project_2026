@@ -1,0 +1,50 @@
+=== R23 run 1 ===
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.04 rows=5929 width=20) (actual time=0.171..0.756 rows=6945.00 loops=1)
+  Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=1 read=36
+Planning:
+  Buffers: shared hit=143 read=1
+Planning Time: 0.630 ms
+Execution Time: 0.882 ms
+=== R23 run 2 ===
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.04 rows=5929 width=20) (actual time=0.023..0.430 rows=6945.00 loops=1)
+  Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=37
+Planning:
+  Buffers: shared hit=144
+Planning Time: 0.216 ms
+Execution Time: 0.613 ms
+=== R23 run 3 ===
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.04 rows=5929 width=20) (actual time=0.023..0.627 rows=6945.00 loops=1)
+  Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=37
+Planning:
+  Buffers: shared hit=144
+Planning Time: 0.213 ms
+Execution Time: 0.931 ms
+=== R23 run 4 ===
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.04 rows=5929 width=20) (actual time=0.089..0.898 rows=6945.00 loops=1)
+  Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=37
+Planning:
+  Buffers: shared hit=144
+Planning Time: 0.686 ms
+Execution Time: 1.113 ms
+=== R23 run 5 ===
+Index Only Scan using idx_devices_inactive_web_desktop on devices d  (cost=0.29..228.04 rows=5929 width=20) (actual time=0.125..1.144 rows=6945.00 loops=1)
+  Index Cond: (last_active_at < '2026-06-01 00:00:00+05:30'::timestamp with time zone)
+  Heap Fetches: 0
+  Index Searches: 1
+  Buffers: shared hit=37
+Planning:
+  Buffers: shared hit=144
+Planning Time: 0.973 ms
+Execution Time: 1.422 ms

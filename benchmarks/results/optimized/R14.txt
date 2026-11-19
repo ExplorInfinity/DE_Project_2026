@@ -1,0 +1,160 @@
+=== R14 run 1 ===
+Limit  (cost=884.57..884.60 rows=10 width=36) (actual time=8.549..8.552 rows=10.00 loops=1)
+  Buffers: shared hit=262
+  ->  Sort  (cost=884.57..886.72 rows=857 width=36) (actual time=8.548..8.550 rows=10.00 loops=1)
+        Sort Key: (count(DISTINCT m.sender_id)) DESC, (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=262
+        ->  GroupAggregate  (cost=846.77..866.05 rows=857 width=36) (actual time=6.794..8.190 rows=2214.00 loops=1)
+              Group Key: m.chat_id, c.group_name
+              Buffers: shared hit=259
+              ->  Sort  (cost=846.77..848.91 rows=857 width=24) (actual time=6.772..6.960 rows=3999.00 loops=1)
+                    Sort Key: m.chat_id, c.group_name, m.sender_id
+                    Sort Method: quicksort  Memory: 268kB
+                    Buffers: shared hit=259
+                    ->  Hash Join  (cost=478.42..805.02 rows=857 width=24) (actual time=3.303..5.629 rows=3999.00 loops=1)
+                          Hash Cond: (m.chat_id = c.chat_id)
+                          Buffers: shared hit=253
+                          ->  Index Scan using idx_messages_sent_at on messages m  (cost=0.42..309.78 rows=6568 width=8) (actual time=0.050..1.034 rows=6593.00 loops=1)
+                                Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=100
+                          ->  Hash  (cost=440.50..440.50 rows=3000 width=20) (actual time=3.234..3.235 rows=3000.00 loops=1)
+                                Buckets: 4096  Batches: 1  Memory Usage: 191kB
+                                Buffers: shared hit=153
+                                ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=20) (actual time=2.103..2.649 rows=3000.00 loops=1)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 20000
+                                      Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=334
+Planning Time: 3.327 ms
+Execution Time: 8.743 ms
+=== R14 run 2 ===
+Limit  (cost=884.57..884.60 rows=10 width=36) (actual time=8.407..8.412 rows=10.00 loops=1)
+  Buffers: shared hit=262
+  ->  Sort  (cost=884.57..886.72 rows=857 width=36) (actual time=8.405..8.408 rows=10.00 loops=1)
+        Sort Key: (count(DISTINCT m.sender_id)) DESC, (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=262
+        ->  GroupAggregate  (cost=846.77..866.05 rows=857 width=36) (actual time=6.836..8.105 rows=2214.00 loops=1)
+              Group Key: m.chat_id, c.group_name
+              Buffers: shared hit=259
+              ->  Sort  (cost=846.77..848.91 rows=857 width=24) (actual time=6.808..7.043 rows=3999.00 loops=1)
+                    Sort Key: m.chat_id, c.group_name, m.sender_id
+                    Sort Method: quicksort  Memory: 268kB
+                    Buffers: shared hit=259
+                    ->  Hash Join  (cost=478.42..805.02 rows=857 width=24) (actual time=2.753..5.446 rows=3999.00 loops=1)
+                          Hash Cond: (m.chat_id = c.chat_id)
+                          Buffers: shared hit=253
+                          ->  Index Scan using idx_messages_sent_at on messages m  (cost=0.42..309.78 rows=6568 width=8) (actual time=0.024..1.092 rows=6593.00 loops=1)
+                                Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=100
+                          ->  Hash  (cost=440.50..440.50 rows=3000 width=20) (actual time=2.711..2.712 rows=3000.00 loops=1)
+                                Buckets: 4096  Batches: 1  Memory Usage: 191kB
+                                Buffers: shared hit=153
+                                ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=20) (actual time=1.715..2.190 rows=3000.00 loops=1)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 20000
+                                      Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=334
+Planning Time: 2.422 ms
+Execution Time: 8.553 ms
+=== R14 run 3 ===
+Limit  (cost=884.57..884.60 rows=10 width=36) (actual time=8.487..8.490 rows=10.00 loops=1)
+  Buffers: shared hit=262
+  ->  Sort  (cost=884.57..886.72 rows=857 width=36) (actual time=8.485..8.487 rows=10.00 loops=1)
+        Sort Key: (count(DISTINCT m.sender_id)) DESC, (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=262
+        ->  GroupAggregate  (cost=846.77..866.05 rows=857 width=36) (actual time=6.820..8.161 rows=2214.00 loops=1)
+              Group Key: m.chat_id, c.group_name
+              Buffers: shared hit=259
+              ->  Sort  (cost=846.77..848.91 rows=857 width=24) (actual time=6.788..7.028 rows=3999.00 loops=1)
+                    Sort Key: m.chat_id, c.group_name, m.sender_id
+                    Sort Method: quicksort  Memory: 268kB
+                    Buffers: shared hit=259
+                    ->  Hash Join  (cost=478.42..805.02 rows=857 width=24) (actual time=2.925..5.494 rows=3999.00 loops=1)
+                          Hash Cond: (m.chat_id = c.chat_id)
+                          Buffers: shared hit=253
+                          ->  Index Scan using idx_messages_sent_at on messages m  (cost=0.42..309.78 rows=6568 width=8) (actual time=0.024..1.068 rows=6593.00 loops=1)
+                                Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=100
+                          ->  Hash  (cost=440.50..440.50 rows=3000 width=20) (actual time=2.880..2.881 rows=3000.00 loops=1)
+                                Buckets: 4096  Batches: 1  Memory Usage: 191kB
+                                Buffers: shared hit=153
+                                ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=20) (actual time=1.863..2.356 rows=3000.00 loops=1)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 20000
+                                      Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=334
+Planning Time: 2.365 ms
+Execution Time: 8.628 ms
+=== R14 run 4 ===
+Limit  (cost=884.57..884.60 rows=10 width=36) (actual time=7.196..7.201 rows=10.00 loops=1)
+  Buffers: shared hit=262
+  ->  Sort  (cost=884.57..886.72 rows=857 width=36) (actual time=7.193..7.197 rows=10.00 loops=1)
+        Sort Key: (count(DISTINCT m.sender_id)) DESC, (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=262
+        ->  GroupAggregate  (cost=846.77..866.05 rows=857 width=36) (actual time=5.801..6.917 rows=2214.00 loops=1)
+              Group Key: m.chat_id, c.group_name
+              Buffers: shared hit=259
+              ->  Sort  (cost=846.77..848.91 rows=857 width=24) (actual time=5.775..5.992 rows=3999.00 loops=1)
+                    Sort Key: m.chat_id, c.group_name, m.sender_id
+                    Sort Method: quicksort  Memory: 268kB
+                    Buffers: shared hit=259
+                    ->  Hash Join  (cost=478.42..805.02 rows=857 width=24) (actual time=2.330..4.584 rows=3999.00 loops=1)
+                          Hash Cond: (m.chat_id = c.chat_id)
+                          Buffers: shared hit=253
+                          ->  Index Scan using idx_messages_sent_at on messages m  (cost=0.42..309.78 rows=6568 width=8) (actual time=0.021..0.918 rows=6593.00 loops=1)
+                                Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=100
+                          ->  Hash  (cost=440.50..440.50 rows=3000 width=20) (actual time=2.287..2.289 rows=3000.00 loops=1)
+                                Buckets: 4096  Batches: 1  Memory Usage: 191kB
+                                Buffers: shared hit=153
+                                ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=20) (actual time=1.499..1.873 rows=3000.00 loops=1)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 20000
+                                      Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=334
+Planning Time: 2.293 ms
+Execution Time: 7.366 ms
+=== R14 run 5 ===
+Limit  (cost=884.57..884.60 rows=10 width=36) (actual time=6.159..6.162 rows=10.00 loops=1)
+  Buffers: shared hit=262
+  ->  Sort  (cost=884.57..886.72 rows=857 width=36) (actual time=6.158..6.160 rows=10.00 loops=1)
+        Sort Key: (count(DISTINCT m.sender_id)) DESC, (count(*)) DESC
+        Sort Method: top-N heapsort  Memory: 26kB
+        Buffers: shared hit=262
+        ->  GroupAggregate  (cost=846.77..866.05 rows=857 width=36) (actual time=4.885..5.911 rows=2214.00 loops=1)
+              Group Key: m.chat_id, c.group_name
+              Buffers: shared hit=259
+              ->  Sort  (cost=846.77..848.91 rows=857 width=24) (actual time=4.868..5.031 rows=3999.00 loops=1)
+                    Sort Key: m.chat_id, c.group_name, m.sender_id
+                    Sort Method: quicksort  Memory: 268kB
+                    Buffers: shared hit=259
+                    ->  Hash Join  (cost=478.42..805.02 rows=857 width=24) (actual time=1.933..3.904 rows=3999.00 loops=1)
+                          Hash Cond: (m.chat_id = c.chat_id)
+                          Buffers: shared hit=253
+                          ->  Index Scan using idx_messages_sent_at on messages m  (cost=0.42..309.78 rows=6568 width=8) (actual time=0.013..0.778 rows=6593.00 loops=1)
+                                Index Cond: ((sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone) AND (sent_at < '2026-07-01 00:00:00+05:30'::timestamp with time zone))
+                                Index Searches: 1
+                                Buffers: shared hit=100
+                          ->  Hash  (cost=440.50..440.50 rows=3000 width=20) (actual time=1.894..1.894 rows=3000.00 loops=1)
+                                Buckets: 4096  Batches: 1  Memory Usage: 191kB
+                                Buffers: shared hit=153
+                                ->  Seq Scan on chats c  (cost=0.00..440.50 rows=3000 width=20) (actual time=1.167..1.514 rows=3000.00 loops=1)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 20000
+                                      Buffers: shared hit=153
+Planning:
+  Buffers: shared hit=334
+Planning Time: 1.396 ms
+Execution Time: 6.253 ms

@@ -1,0 +1,160 @@
+=== R01 run 1 ===
+Sort  (cost=59.41..59.42 rows=3 width=52) (actual time=1.710..1.712 rows=4.00 loops=1)
+  Sort Key: m.sent_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=28 read=10
+  ->  Nested Loop  (cost=5.15..59.39 rows=3 width=52) (actual time=1.005..1.671 rows=4.00 loops=1)
+        Buffers: shared hit=25 read=10
+        ->  Nested Loop  (cost=4.74..44.55 rows=3 width=24) (actual time=0.590..0.625 rows=4.00 loops=1)
+              Buffers: shared hit=16 read=3
+              ->  Bitmap Heap Scan on chat_members cm  (cost=4.45..19.64 rows=3 width=4) (actual time=0.580..0.596 rows=4.00 loops=1)
+                    Recheck Cond: (user_id = 965)
+                    Filter: (left_at IS NULL)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=4 read=3
+                    ->  Bitmap Index Scan on idx_chat_members_user_chat  (cost=0.00..4.45 rows=4 width=0) (actual time=0.566..0.567 rows=4.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Index Searches: 1
+                          Buffers: shared read=3
+              ->  Index Scan using chats_pkey on chats c  (cost=0.29..8.30 rows=1 width=24) (actual time=0.006..0.006 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=12
+        ->  Limit  (cost=0.42..4.93 rows=1 width=28) (actual time=0.260..0.260 rows=1.00 loops=4)
+              Buffers: shared hit=9 read=7
+              ->  Index Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.42..36.56 rows=8 width=28) (actual time=0.260..0.260 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=9 read=7
+Planning:
+  Buffers: shared hit=393 read=7
+Planning Time: 4.402 ms
+Execution Time: 1.796 ms
+=== R01 run 2 ===
+Sort  (cost=59.41..59.42 rows=3 width=52) (actual time=0.227..0.229 rows=4.00 loops=1)
+  Sort Key: m.sent_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=38
+  ->  Nested Loop  (cost=5.15..59.39 rows=3 width=52) (actual time=0.093..0.179 rows=4.00 loops=1)
+        Buffers: shared hit=35
+        ->  Nested Loop  (cost=4.74..44.55 rows=3 width=24) (actual time=0.053..0.098 rows=4.00 loops=1)
+              Buffers: shared hit=19
+              ->  Bitmap Heap Scan on chat_members cm  (cost=4.45..19.64 rows=3 width=4) (actual time=0.040..0.056 rows=4.00 loops=1)
+                    Recheck Cond: (user_id = 965)
+                    Filter: (left_at IS NULL)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=7
+                    ->  Bitmap Index Scan on idx_chat_members_user_chat  (cost=0.00..4.45 rows=4 width=0) (actual time=0.024..0.024 rows=4.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Index Searches: 1
+                          Buffers: shared hit=3
+              ->  Index Scan using chats_pkey on chats c  (cost=0.29..8.30 rows=1 width=24) (actual time=0.009..0.009 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=12
+        ->  Limit  (cost=0.42..4.93 rows=1 width=28) (actual time=0.019..0.019 rows=1.00 loops=4)
+              Buffers: shared hit=16
+              ->  Index Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.42..36.56 rows=8 width=28) (actual time=0.019..0.019 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=16
+Planning:
+  Buffers: shared hit=400
+Planning Time: 3.047 ms
+Execution Time: 0.326 ms
+=== R01 run 3 ===
+Sort  (cost=59.41..59.42 rows=3 width=52) (actual time=0.283..0.284 rows=4.00 loops=1)
+  Sort Key: m.sent_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=38
+  ->  Nested Loop  (cost=5.15..59.39 rows=3 width=52) (actual time=0.112..0.232 rows=4.00 loops=1)
+        Buffers: shared hit=35
+        ->  Nested Loop  (cost=4.74..44.55 rows=3 width=24) (actual time=0.062..0.129 rows=4.00 loops=1)
+              Buffers: shared hit=19
+              ->  Bitmap Heap Scan on chat_members cm  (cost=4.45..19.64 rows=3 width=4) (actual time=0.048..0.072 rows=4.00 loops=1)
+                    Recheck Cond: (user_id = 965)
+                    Filter: (left_at IS NULL)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=7
+                    ->  Bitmap Index Scan on idx_chat_members_user_chat  (cost=0.00..4.45 rows=4 width=0) (actual time=0.026..0.026 rows=4.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Index Searches: 1
+                          Buffers: shared hit=3
+              ->  Index Scan using chats_pkey on chats c  (cost=0.29..8.30 rows=1 width=24) (actual time=0.013..0.013 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=12
+        ->  Limit  (cost=0.42..4.93 rows=1 width=28) (actual time=0.025..0.025 rows=1.00 loops=4)
+              Buffers: shared hit=16
+              ->  Index Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.42..36.56 rows=8 width=28) (actual time=0.024..0.024 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=16
+Planning:
+  Buffers: shared hit=400
+Planning Time: 2.855 ms
+Execution Time: 0.383 ms
+=== R01 run 4 ===
+Sort  (cost=59.41..59.42 rows=3 width=52) (actual time=0.348..0.350 rows=4.00 loops=1)
+  Sort Key: m.sent_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=38
+  ->  Nested Loop  (cost=5.15..59.39 rows=3 width=52) (actual time=0.144..0.288 rows=4.00 loops=1)
+        Buffers: shared hit=35
+        ->  Nested Loop  (cost=4.74..44.55 rows=3 width=24) (actual time=0.084..0.162 rows=4.00 loops=1)
+              Buffers: shared hit=19
+              ->  Bitmap Heap Scan on chat_members cm  (cost=4.45..19.64 rows=3 width=4) (actual time=0.065..0.089 rows=4.00 loops=1)
+                    Recheck Cond: (user_id = 965)
+                    Filter: (left_at IS NULL)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=7
+                    ->  Bitmap Index Scan on idx_chat_members_user_chat  (cost=0.00..4.45 rows=4 width=0) (actual time=0.040..0.040 rows=4.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Index Searches: 1
+                          Buffers: shared hit=3
+              ->  Index Scan using chats_pkey on chats c  (cost=0.29..8.30 rows=1 width=24) (actual time=0.016..0.016 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=12
+        ->  Limit  (cost=0.42..4.93 rows=1 width=28) (actual time=0.030..0.030 rows=1.00 loops=4)
+              Buffers: shared hit=16
+              ->  Index Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.42..36.56 rows=8 width=28) (actual time=0.030..0.030 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=16
+Planning:
+  Buffers: shared hit=400
+Planning Time: 2.653 ms
+Execution Time: 0.484 ms
+=== R01 run 5 ===
+Sort  (cost=59.41..59.42 rows=3 width=52) (actual time=0.310..0.312 rows=4.00 loops=1)
+  Sort Key: m.sent_at DESC
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=38
+  ->  Nested Loop  (cost=5.15..59.39 rows=3 width=52) (actual time=0.125..0.251 rows=4.00 loops=1)
+        Buffers: shared hit=35
+        ->  Nested Loop  (cost=4.74..44.55 rows=3 width=24) (actual time=0.073..0.139 rows=4.00 loops=1)
+              Buffers: shared hit=19
+              ->  Bitmap Heap Scan on chat_members cm  (cost=4.45..19.64 rows=3 width=4) (actual time=0.055..0.079 rows=4.00 loops=1)
+                    Recheck Cond: (user_id = 965)
+                    Filter: (left_at IS NULL)
+                    Heap Blocks: exact=4
+                    Buffers: shared hit=7
+                    ->  Bitmap Index Scan on idx_chat_members_user_chat  (cost=0.00..4.45 rows=4 width=0) (actual time=0.033..0.033 rows=4.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Index Searches: 1
+                          Buffers: shared hit=3
+              ->  Index Scan using chats_pkey on chats c  (cost=0.29..8.30 rows=1 width=24) (actual time=0.013..0.013 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=12
+        ->  Limit  (cost=0.42..4.93 rows=1 width=28) (actual time=0.027..0.027 rows=1.00 loops=4)
+              Buffers: shared hit=16
+              ->  Index Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.42..36.56 rows=8 width=28) (actual time=0.026..0.026 rows=1.00 loops=4)
+                    Index Cond: (chat_id = cm.chat_id)
+                    Index Searches: 4
+                    Buffers: shared hit=16
+Planning:
+  Buffers: shared hit=400
+Planning Time: 3.700 ms
+Execution Time: 0.439 ms

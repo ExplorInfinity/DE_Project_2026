@@ -1,0 +1,85 @@
+=== R22 run 1 ===
+Nested Loop  (cost=2608.92..2817.03 rows=25 width=24) (actual time=4.925..4.938 rows=25.00 loops=1)
+  Buffers: shared hit=352 dirtied=1
+  ->  Limit  (cost=2608.63..2609.28 rows=25 width=4) (actual time=4.921..4.922 rows=25.00 loops=1)
+        Buffers: shared hit=277 dirtied=1
+        ->  Index Only Scan Backward using messages_pkey on messages  (cost=0.29..3130.29 rows=120000 width=4) (actual time=0.003..3.064 rows=100025.00 loops=1)
+              Heap Fetches: 88
+              Index Searches: 1
+              Buffers: shared hit=277 dirtied=1
+  ->  Index Scan using messages_pkey on messages m  (cost=0.29..8.31 rows=1 width=24) (actual time=0.000..0.000 rows=1.00 loops=25)
+        Index Cond: (message_id = messages.message_id)
+        Index Searches: 25
+        Buffers: shared hit=75
+Planning:
+  Buffers: shared hit=262
+Planning Time: 0.453 ms
+Execution Time: 4.959 ms
+=== R22 run 2 ===
+Nested Loop  (cost=2608.92..2817.03 rows=25 width=24) (actual time=5.148..5.159 rows=25.00 loops=1)
+  Buffers: shared hit=352
+  ->  Limit  (cost=2608.63..2609.28 rows=25 width=4) (actual time=5.144..5.146 rows=25.00 loops=1)
+        Buffers: shared hit=277
+        ->  Index Only Scan Backward using messages_pkey on messages  (cost=0.29..3130.29 rows=120000 width=4) (actual time=0.003..3.201 rows=100025.00 loops=1)
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=277
+  ->  Index Scan using messages_pkey on messages m  (cost=0.29..8.31 rows=1 width=24) (actual time=0.000..0.000 rows=1.00 loops=25)
+        Index Cond: (message_id = messages.message_id)
+        Index Searches: 25
+        Buffers: shared hit=75
+Planning:
+  Buffers: shared hit=262
+Planning Time: 0.440 ms
+Execution Time: 5.177 ms
+=== R22 run 3 ===
+Nested Loop  (cost=2608.92..2817.03 rows=25 width=24) (actual time=5.105..5.119 rows=25.00 loops=1)
+  Buffers: shared hit=352
+  ->  Limit  (cost=2608.63..2609.28 rows=25 width=4) (actual time=5.099..5.100 rows=25.00 loops=1)
+        Buffers: shared hit=277
+        ->  Index Only Scan Backward using messages_pkey on messages  (cost=0.29..3130.29 rows=120000 width=4) (actual time=0.002..3.166 rows=100025.00 loops=1)
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=277
+  ->  Index Scan using messages_pkey on messages m  (cost=0.29..8.31 rows=1 width=24) (actual time=0.001..0.001 rows=1.00 loops=25)
+        Index Cond: (message_id = messages.message_id)
+        Index Searches: 25
+        Buffers: shared hit=75
+Planning:
+  Buffers: shared hit=262
+Planning Time: 0.423 ms
+Execution Time: 5.136 ms
+=== R22 run 4 ===
+Nested Loop  (cost=2608.92..2817.03 rows=25 width=24) (actual time=5.698..5.713 rows=25.00 loops=1)
+  Buffers: shared hit=352
+  ->  Limit  (cost=2608.63..2609.28 rows=25 width=4) (actual time=5.693..5.695 rows=25.00 loops=1)
+        Buffers: shared hit=277
+        ->  Index Only Scan Backward using messages_pkey on messages  (cost=0.29..3130.29 rows=120000 width=4) (actual time=0.003..3.545 rows=100025.00 loops=1)
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=277
+  ->  Index Scan using messages_pkey on messages m  (cost=0.29..8.31 rows=1 width=24) (actual time=0.001..0.001 rows=1.00 loops=25)
+        Index Cond: (message_id = messages.message_id)
+        Index Searches: 25
+        Buffers: shared hit=75
+Planning:
+  Buffers: shared hit=262
+Planning Time: 0.467 ms
+Execution Time: 5.732 ms
+=== R22 run 5 ===
+Nested Loop  (cost=2608.92..2817.03 rows=25 width=24) (actual time=6.027..6.043 rows=25.00 loops=1)
+  Buffers: shared hit=352
+  ->  Limit  (cost=2608.63..2609.28 rows=25 width=4) (actual time=6.022..6.024 rows=25.00 loops=1)
+        Buffers: shared hit=277
+        ->  Index Only Scan Backward using messages_pkey on messages  (cost=0.29..3130.29 rows=120000 width=4) (actual time=0.002..3.741 rows=100025.00 loops=1)
+              Heap Fetches: 87
+              Index Searches: 1
+              Buffers: shared hit=277
+  ->  Index Scan using messages_pkey on messages m  (cost=0.29..8.31 rows=1 width=24) (actual time=0.001..0.001 rows=1.00 loops=25)
+        Index Cond: (message_id = messages.message_id)
+        Index Searches: 25
+        Buffers: shared hit=75
+Planning:
+  Buffers: shared hit=262
+Planning Time: 0.467 ms
+Execution Time: 6.063 ms
