@@ -1,0 +1,160 @@
+=== R19 run 1 ===
+Sort  (cost=574767.22..574915.65 rows=59371 width=36) (actual time=125.834..127.547 rows=60000.00 loops=1)
+  Sort Key: ((SubPlan 2)) DESC NULLS LAST
+  Sort Method: external merge  Disk: 2984kB
+  Buffers: shared hit=357668 read=5539 written=3642, temp read=373 written=374
+  ->  Seq Scan on chats c  (cost=0.00..570059.85 rows=59371 width=36) (actual time=10.210..117.139 rows=60000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 400000
+        Buffers: shared hit=357665 read=5539 written=3642
+        SubPlan 2
+          ->  Result  (cost=0.98..0.99 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=174607 read=5394 written=3552
+                InitPlan 1
+                  ->  Limit  (cost=0.43..0.98 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                        Buffers: shared hit=174607 read=5394 written=3552
+                        ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.43..8.69 rows=15 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                              Index Cond: (chat_id = c.chat_id)
+                              Heap Fetches: 0
+                              Index Searches: 60000
+                              Buffers: shared hit=174607 read=5394 written=3552
+        SubPlan 3
+          ->  Aggregate  (cost=8.45..8.46 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180002 read=145 written=90
+                ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m_1  (cost=0.43..8.45 rows=1 width=0) (actual time=0.000..0.000 rows=1.32 loops=60000)
+                      Index Cond: ((chat_id = c.chat_id) AND (sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone))
+                      Heap Fetches: 0
+                      Index Searches: 60000
+                      Buffers: shared hit=180002 read=145 written=90
+Planning:
+  Buffers: shared hit=270
+Planning Time: 0.641 ms
+Execution Time: 129.205 ms
+=== R19 run 2 ===
+Sort  (cost=574767.22..574915.65 rows=59371 width=36) (actual time=109.875..111.558 rows=60000.00 loops=1)
+  Sort Key: ((SubPlan 2)) DESC NULLS LAST
+  Sort Method: external merge  Disk: 2984kB
+  Buffers: shared hit=363207, temp read=373 written=374
+  ->  Seq Scan on chats c  (cost=0.00..570059.85 rows=59371 width=36) (actual time=9.760..101.422 rows=60000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 400000
+        Buffers: shared hit=363204
+        SubPlan 2
+          ->  Result  (cost=0.98..0.99 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180001
+                InitPlan 1
+                  ->  Limit  (cost=0.43..0.98 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                        Buffers: shared hit=180001
+                        ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.43..8.69 rows=15 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                              Index Cond: (chat_id = c.chat_id)
+                              Heap Fetches: 0
+                              Index Searches: 60000
+                              Buffers: shared hit=180001
+        SubPlan 3
+          ->  Aggregate  (cost=8.45..8.46 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180147
+                ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m_1  (cost=0.43..8.45 rows=1 width=0) (actual time=0.000..0.000 rows=1.32 loops=60000)
+                      Index Cond: ((chat_id = c.chat_id) AND (sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone))
+                      Heap Fetches: 0
+                      Index Searches: 60000
+                      Buffers: shared hit=180147
+Planning:
+  Buffers: shared hit=270
+Planning Time: 0.555 ms
+Execution Time: 113.219 ms
+=== R19 run 3 ===
+Sort  (cost=574767.22..574915.65 rows=59371 width=36) (actual time=110.588..112.357 rows=60000.00 loops=1)
+  Sort Key: ((SubPlan 2)) DESC NULLS LAST
+  Sort Method: external merge  Disk: 2984kB
+  Buffers: shared hit=363207, temp read=373 written=374
+  ->  Seq Scan on chats c  (cost=0.00..570059.85 rows=59371 width=36) (actual time=9.716..101.917 rows=60000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 400000
+        Buffers: shared hit=363204
+        SubPlan 2
+          ->  Result  (cost=0.98..0.99 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180001
+                InitPlan 1
+                  ->  Limit  (cost=0.43..0.98 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                        Buffers: shared hit=180001
+                        ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.43..8.69 rows=15 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                              Index Cond: (chat_id = c.chat_id)
+                              Heap Fetches: 0
+                              Index Searches: 60000
+                              Buffers: shared hit=180001
+        SubPlan 3
+          ->  Aggregate  (cost=8.45..8.46 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180147
+                ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m_1  (cost=0.43..8.45 rows=1 width=0) (actual time=0.000..0.000 rows=1.32 loops=60000)
+                      Index Cond: ((chat_id = c.chat_id) AND (sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone))
+                      Heap Fetches: 0
+                      Index Searches: 60000
+                      Buffers: shared hit=180147
+Planning:
+  Buffers: shared hit=270
+Planning Time: 0.551 ms
+Execution Time: 114.042 ms
+=== R19 run 4 ===
+Sort  (cost=574767.22..574915.65 rows=59371 width=36) (actual time=108.788..110.503 rows=60000.00 loops=1)
+  Sort Key: ((SubPlan 2)) DESC NULLS LAST
+  Sort Method: external merge  Disk: 2984kB
+  Buffers: shared hit=363207, temp read=373 written=374
+  ->  Seq Scan on chats c  (cost=0.00..570059.85 rows=59371 width=36) (actual time=9.573..100.117 rows=60000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 400000
+        Buffers: shared hit=363204
+        SubPlan 2
+          ->  Result  (cost=0.98..0.99 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180001
+                InitPlan 1
+                  ->  Limit  (cost=0.43..0.98 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                        Buffers: shared hit=180001
+                        ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.43..8.69 rows=15 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                              Index Cond: (chat_id = c.chat_id)
+                              Heap Fetches: 0
+                              Index Searches: 60000
+                              Buffers: shared hit=180001
+        SubPlan 3
+          ->  Aggregate  (cost=8.45..8.46 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180147
+                ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m_1  (cost=0.43..8.45 rows=1 width=0) (actual time=0.000..0.000 rows=1.32 loops=60000)
+                      Index Cond: ((chat_id = c.chat_id) AND (sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone))
+                      Heap Fetches: 0
+                      Index Searches: 60000
+                      Buffers: shared hit=180147
+Planning:
+  Buffers: shared hit=270
+Planning Time: 0.555 ms
+Execution Time: 112.387 ms
+=== R19 run 5 ===
+Sort  (cost=574767.22..574915.65 rows=59371 width=36) (actual time=110.325..111.997 rows=60000.00 loops=1)
+  Sort Key: ((SubPlan 2)) DESC NULLS LAST
+  Sort Method: external merge  Disk: 2984kB
+  Buffers: shared hit=363207, temp read=373 written=374
+  ->  Seq Scan on chats c  (cost=0.00..570059.85 rows=59371 width=36) (actual time=9.933..101.832 rows=60000.00 loops=1)
+        Filter: (chat_type = 'GROUP'::chat_type)
+        Rows Removed by Filter: 400000
+        Buffers: shared hit=363204
+        SubPlan 2
+          ->  Result  (cost=0.98..0.99 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180001
+                InitPlan 1
+                  ->  Limit  (cost=0.43..0.98 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                        Buffers: shared hit=180001
+                        ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m  (cost=0.43..8.69 rows=15 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                              Index Cond: (chat_id = c.chat_id)
+                              Heap Fetches: 0
+                              Index Searches: 60000
+                              Buffers: shared hit=180001
+        SubPlan 3
+          ->  Aggregate  (cost=8.45..8.46 rows=1 width=8) (actual time=0.001..0.001 rows=1.00 loops=60000)
+                Buffers: shared hit=180147
+                ->  Index Only Scan using idx_messages_chat_id_sent_at on messages m_1  (cost=0.43..8.45 rows=1 width=0) (actual time=0.000..0.000 rows=1.32 loops=60000)
+                      Index Cond: ((chat_id = c.chat_id) AND (sent_at >= '2026-06-01 00:00:00+05:30'::timestamp with time zone))
+                      Heap Fetches: 0
+                      Index Searches: 60000
+                      Buffers: shared hit=180147
+Planning:
+  Buffers: shared hit=270
+Planning Time: 0.528 ms
+Execution Time: 113.677 ms

@@ -8,21 +8,21 @@ SET search_path TO whatsapp;
 BEGIN;
 
 -- Parent table
-\copy whatsapp.users FROM 'seed_data/users.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.users FROM 'large_data/users.csv' WITH (FORMAT csv, HEADER true)
 
 -- User-dependent tables
-\copy whatsapp.devices FROM 'seed_data/devices.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.devices FROM 'large_data/devices.csv' WITH (FORMAT csv, HEADER true)
 
 -- Chat parent must be loaded before memberships, messages, and calls
-\copy whatsapp.chats FROM 'seed_data/chats.csv' WITH (FORMAT csv, HEADER true)
-\copy whatsapp.chat_members FROM 'seed_data/chat_members.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.chats FROM 'large_data/chats.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.chat_members FROM 'large_data/chat_members.csv' WITH (FORMAT csv, HEADER true)
 
 -- Media must be loaded before messages that reference it
-\copy whatsapp.media FROM 'seed_data/media.csv' WITH (FORMAT csv, HEADER true)
-\copy whatsapp.blocked_users FROM 'seed_data/blocked_users.csv' WITH (FORMAT csv, HEADER true)
-\copy whatsapp.calls FROM 'seed_data/calls.csv' WITH (FORMAT csv, HEADER true)
-\copy whatsapp.messages FROM 'seed_data/messages.csv' WITH (FORMAT csv, HEADER true)
-\copy whatsapp.message_receipts FROM 'seed_data/message_receipts.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.media FROM 'large_data/media.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.blocked_users FROM 'large_data/blocked_users.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.calls FROM 'large_data/calls.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.messages FROM 'large_data/messages.csv' WITH (FORMAT csv, HEADER true)
+\copy whatsapp.message_receipts FROM 'large_data/message_receipts.csv' WITH (FORMAT csv, HEADER true)
 
 ANALYZE;
 

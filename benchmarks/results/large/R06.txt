@@ -1,0 +1,185 @@
+=== R06 run 1 ===
+Sort  (cost=51.85..51.89 rows=14 width=24) (actual time=0.136..0.137 rows=1.00 loops=1)
+  Sort Key: u.last_seen_at DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=24 read=3
+  ->  Nested Loop  (cost=1.70..51.59 rows=14 width=24) (actual time=0.086..0.116 rows=1.00 loops=1)
+        Buffers: shared hit=21 read=3
+        ->  Nested Loop  (cost=1.28..45.16 rows=14 width=4) (actual time=0.062..0.092 rows=1.00 loops=1)
+              Join Filter: (other.user_id <> me.user_id)
+              Rows Removed by Join Filter: 1
+              Buffers: shared hit=19 read=1
+              ->  Nested Loop  (cost=0.85..42.27 rows=3 width=12) (actual time=0.040..0.068 rows=1.00 loops=1)
+                    Buffers: shared hit=16
+                    ->  Index Only Scan using idx_chat_members_user_chat on chat_members me  (cost=0.43..8.50 rows=4 width=8) (actual time=0.017..0.018 rows=3.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=4
+                    ->  Index Scan using chats_pkey on chats c  (cost=0.42..8.44 rows=1 width=4) (actual time=0.016..0.016 rows=0.33 loops=3)
+                          Index Cond: (chat_id = me.chat_id)
+                          Filter: (chat_type = 'DIRECT'::chat_type)
+                          Rows Removed by Filter: 1
+                          Index Searches: 3
+                          Buffers: shared hit=12
+              ->  Index Only Scan using chat_members_pkey on chat_members other  (cost=0.43..0.77 rows=16 width=8) (actual time=0.021..0.022 rows=2.00 loops=1)
+                    Index Cond: (chat_id = c.chat_id)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=3 read=1
+        ->  Index Scan using users_pkey on users u  (cost=0.42..0.46 rows=1 width=24) (actual time=0.023..0.023 rows=1.00 loops=1)
+              Index Cond: (user_id = other.user_id)
+              Index Searches: 1
+              Buffers: shared hit=2 read=2
+Planning:
+  Buffers: shared hit=327 read=8
+Planning Time: 1.853 ms
+Execution Time: 0.238 ms
+=== R06 run 2 ===
+Sort  (cost=51.85..51.89 rows=14 width=24) (actual time=0.234..0.236 rows=1.00 loops=1)
+  Sort Key: u.last_seen_at DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=27
+  ->  Nested Loop  (cost=1.70..51.59 rows=14 width=24) (actual time=0.154..0.204 rows=1.00 loops=1)
+        Buffers: shared hit=24
+        ->  Nested Loop  (cost=1.28..45.16 rows=14 width=4) (actual time=0.127..0.176 rows=1.00 loops=1)
+              Join Filter: (other.user_id <> me.user_id)
+              Rows Removed by Join Filter: 1
+              Buffers: shared hit=20
+              ->  Nested Loop  (cost=0.85..42.27 rows=3 width=12) (actual time=0.094..0.142 rows=1.00 loops=1)
+                    Buffers: shared hit=16
+                    ->  Index Only Scan using idx_chat_members_user_chat on chat_members me  (cost=0.43..8.50 rows=4 width=8) (actual time=0.023..0.026 rows=3.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=4
+                    ->  Index Scan using chats_pkey on chats c  (cost=0.42..8.44 rows=1 width=4) (actual time=0.037..0.037 rows=0.33 loops=3)
+                          Index Cond: (chat_id = me.chat_id)
+                          Filter: (chat_type = 'DIRECT'::chat_type)
+                          Rows Removed by Filter: 1
+                          Index Searches: 3
+                          Buffers: shared hit=12
+              ->  Index Only Scan using chat_members_pkey on chat_members other  (cost=0.43..0.77 rows=16 width=8) (actual time=0.030..0.031 rows=2.00 loops=1)
+                    Index Cond: (chat_id = c.chat_id)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=4
+        ->  Index Scan using users_pkey on users u  (cost=0.42..0.46 rows=1 width=24) (actual time=0.025..0.025 rows=1.00 loops=1)
+              Index Cond: (user_id = other.user_id)
+              Index Searches: 1
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=335
+Planning Time: 2.948 ms
+Execution Time: 0.395 ms
+=== R06 run 3 ===
+Sort  (cost=51.85..51.89 rows=14 width=24) (actual time=0.100..0.101 rows=1.00 loops=1)
+  Sort Key: u.last_seen_at DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=27
+  ->  Nested Loop  (cost=1.70..51.59 rows=14 width=24) (actual time=0.058..0.079 rows=1.00 loops=1)
+        Buffers: shared hit=24
+        ->  Nested Loop  (cost=1.28..45.16 rows=14 width=4) (actual time=0.042..0.063 rows=1.00 loops=1)
+              Join Filter: (other.user_id <> me.user_id)
+              Rows Removed by Join Filter: 1
+              Buffers: shared hit=20
+              ->  Nested Loop  (cost=0.85..42.27 rows=3 width=12) (actual time=0.027..0.047 rows=1.00 loops=1)
+                    Buffers: shared hit=16
+                    ->  Index Only Scan using idx_chat_members_user_chat on chat_members me  (cost=0.43..8.50 rows=4 width=8) (actual time=0.010..0.011 rows=3.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=4
+                    ->  Index Scan using chats_pkey on chats c  (cost=0.42..8.44 rows=1 width=4) (actual time=0.011..0.011 rows=0.33 loops=3)
+                          Index Cond: (chat_id = me.chat_id)
+                          Filter: (chat_type = 'DIRECT'::chat_type)
+                          Rows Removed by Filter: 1
+                          Index Searches: 3
+                          Buffers: shared hit=12
+              ->  Index Only Scan using chat_members_pkey on chat_members other  (cost=0.43..0.77 rows=16 width=8) (actual time=0.013..0.013 rows=2.00 loops=1)
+                    Index Cond: (chat_id = c.chat_id)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=4
+        ->  Index Scan using users_pkey on users u  (cost=0.42..0.46 rows=1 width=24) (actual time=0.014..0.014 rows=1.00 loops=1)
+              Index Cond: (user_id = other.user_id)
+              Index Searches: 1
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=335
+Planning Time: 2.216 ms
+Execution Time: 0.194 ms
+=== R06 run 4 ===
+Sort  (cost=51.85..51.89 rows=14 width=24) (actual time=0.137..0.138 rows=1.00 loops=1)
+  Sort Key: u.last_seen_at DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=27
+  ->  Nested Loop  (cost=1.70..51.59 rows=14 width=24) (actual time=0.083..0.115 rows=1.00 loops=1)
+        Buffers: shared hit=24
+        ->  Nested Loop  (cost=1.28..45.16 rows=14 width=4) (actual time=0.068..0.101 rows=1.00 loops=1)
+              Join Filter: (other.user_id <> me.user_id)
+              Rows Removed by Join Filter: 1
+              Buffers: shared hit=20
+              ->  Nested Loop  (cost=0.85..42.27 rows=3 width=12) (actual time=0.037..0.068 rows=1.00 loops=1)
+                    Buffers: shared hit=16
+                    ->  Index Only Scan using idx_chat_members_user_chat on chat_members me  (cost=0.43..8.50 rows=4 width=8) (actual time=0.013..0.014 rows=3.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=4
+                    ->  Index Scan using chats_pkey on chats c  (cost=0.42..8.44 rows=1 width=4) (actual time=0.017..0.017 rows=0.33 loops=3)
+                          Index Cond: (chat_id = me.chat_id)
+                          Filter: (chat_type = 'DIRECT'::chat_type)
+                          Rows Removed by Filter: 1
+                          Index Searches: 3
+                          Buffers: shared hit=12
+              ->  Index Only Scan using chat_members_pkey on chat_members other  (cost=0.43..0.77 rows=16 width=8) (actual time=0.017..0.018 rows=2.00 loops=1)
+                    Index Cond: (chat_id = c.chat_id)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=4
+        ->  Index Scan using users_pkey on users u  (cost=0.42..0.46 rows=1 width=24) (actual time=0.012..0.012 rows=1.00 loops=1)
+              Index Cond: (user_id = other.user_id)
+              Index Searches: 1
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=335
+Planning Time: 3.096 ms
+Execution Time: 0.244 ms
+=== R06 run 5 ===
+Sort  (cost=51.85..51.89 rows=14 width=24) (actual time=0.169..0.170 rows=1.00 loops=1)
+  Sort Key: u.last_seen_at DESC NULLS LAST
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=27
+  ->  Nested Loop  (cost=1.70..51.59 rows=14 width=24) (actual time=0.103..0.148 rows=1.00 loops=1)
+        Buffers: shared hit=24
+        ->  Nested Loop  (cost=1.28..45.16 rows=14 width=4) (actual time=0.069..0.115 rows=1.00 loops=1)
+              Join Filter: (other.user_id <> me.user_id)
+              Rows Removed by Join Filter: 1
+              Buffers: shared hit=20
+              ->  Nested Loop  (cost=0.85..42.27 rows=3 width=12) (actual time=0.047..0.091 rows=1.00 loops=1)
+                    Buffers: shared hit=16
+                    ->  Index Only Scan using idx_chat_members_user_chat on chat_members me  (cost=0.43..8.50 rows=4 width=8) (actual time=0.015..0.017 rows=3.00 loops=1)
+                          Index Cond: (user_id = 965)
+                          Heap Fetches: 0
+                          Index Searches: 1
+                          Buffers: shared hit=4
+                    ->  Index Scan using chats_pkey on chats c  (cost=0.42..8.44 rows=1 width=4) (actual time=0.024..0.024 rows=0.33 loops=3)
+                          Index Cond: (chat_id = me.chat_id)
+                          Filter: (chat_type = 'DIRECT'::chat_type)
+                          Rows Removed by Filter: 1
+                          Index Searches: 3
+                          Buffers: shared hit=12
+              ->  Index Only Scan using chat_members_pkey on chat_members other  (cost=0.43..0.77 rows=16 width=8) (actual time=0.020..0.021 rows=2.00 loops=1)
+                    Index Cond: (chat_id = c.chat_id)
+                    Heap Fetches: 0
+                    Index Searches: 1
+                    Buffers: shared hit=4
+        ->  Index Scan using users_pkey on users u  (cost=0.42..0.46 rows=1 width=24) (actual time=0.031..0.031 rows=1.00 loops=1)
+              Index Cond: (user_id = other.user_id)
+              Index Searches: 1
+              Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=335
+Planning Time: 3.011 ms
+Execution Time: 0.273 ms

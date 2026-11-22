@@ -1,0 +1,145 @@
+=== R24 run 1 ===
+Sort  (cost=104113.19..104244.13 rows=52377 width=105) (actual time=206.623..209.397 rows=48.00 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 30kB
+  Buffers: shared hit=77 read=9096, temp read=6072 written=6087
+  ->  Finalize GroupAggregate  (cost=43046.09..96962.71 rows=52377 width=105) (actual time=55.192..209.382 rows=48.00 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Rows Removed by Filter: 485032
+        Buffers: shared hit=74 read=9096, temp read=6072 written=6087
+        ->  Gather Merge  (cost=43046.09..90834.64 rows=377112 width=105) (actual time=53.261..130.125 rows=485176.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=74 read=9096, temp read=6072 written=6087
+              ->  Partial GroupAggregate  (cost=42046.07..46306.54 rows=157130 width=105) (actual time=50.547..92.361 rows=161725.33 loops=3)
+                    Group Key: sha256
+                    Buffers: shared hit=74 read=9096, temp read=6072 written=6087
+                    ->  Sort  (cost=42046.07..42620.16 rows=229634 width=73) (actual time=50.536..64.028 rows=183707.00 loops=3)
+                          Sort Key: sha256
+                          Sort Method: external merge  Disk: 17648kB
+                          Buffers: shared hit=74 read=9096, temp read=6072 written=6087
+                          Worker 0:  Sort Method: external merge  Disk: 15464kB
+                          Worker 1:  Sort Method: external merge  Disk: 15464kB
+                          ->  Parallel Seq Scan on media  (cost=0.00..11392.34 rows=229634 width=73) (actual time=0.047..8.700 rows=183707.00 loops=3)
+                                Buffers: shared read=9096
+Planning:
+  Buffers: shared hit=145 read=4
+Planning Time: 0.265 ms
+Execution Time: 209.802 ms
+=== R24 run 2 ===
+Sort  (cost=104113.19..104244.13 rows=52377 width=105) (actual time=201.397..204.237 rows=48.00 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 30kB
+  Buffers: shared hit=359 read=8814, temp read=6072 written=6087
+  ->  Finalize GroupAggregate  (cost=43046.09..96962.71 rows=52377 width=105) (actual time=47.678..204.224 rows=48.00 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Rows Removed by Filter: 485032
+        Buffers: shared hit=356 read=8814, temp read=6072 written=6087
+        ->  Gather Merge  (cost=43046.09..90834.64 rows=377112 width=105) (actual time=45.775..123.157 rows=485176.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=356 read=8814, temp read=6072 written=6087
+              ->  Partial GroupAggregate  (cost=42046.07..46306.54 rows=157130 width=105) (actual time=44.401..86.578 rows=161725.33 loops=3)
+                    Group Key: sha256
+                    Buffers: shared hit=356 read=8814, temp read=6072 written=6087
+                    ->  Sort  (cost=42046.07..42620.16 rows=229634 width=73) (actual time=44.391..58.072 rows=183707.00 loops=3)
+                          Sort Key: sha256
+                          Sort Method: external merge  Disk: 17648kB
+                          Buffers: shared hit=356 read=8814, temp read=6072 written=6087
+                          Worker 0:  Sort Method: external merge  Disk: 15464kB
+                          Worker 1:  Sort Method: external merge  Disk: 15464kB
+                          ->  Parallel Seq Scan on media  (cost=0.00..11392.34 rows=229634 width=73) (actual time=0.036..7.307 rows=183707.00 loops=3)
+                                Buffers: shared hit=282 read=8814
+Planning:
+  Buffers: shared hit=149
+Planning Time: 0.233 ms
+Execution Time: 204.613 ms
+=== R24 run 3 ===
+Sort  (cost=104113.19..104244.13 rows=52377 width=105) (actual time=208.950..211.839 rows=48.00 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 30kB
+  Buffers: shared hit=641 read=8532, temp read=6073 written=6088
+  ->  Finalize GroupAggregate  (cost=43046.09..96962.71 rows=52377 width=105) (actual time=48.997..211.823 rows=48.00 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Rows Removed by Filter: 485032
+        Buffers: shared hit=638 read=8532, temp read=6073 written=6088
+        ->  Gather Merge  (cost=43046.09..90834.64 rows=377112 width=105) (actual time=46.938..125.887 rows=485176.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=638 read=8532, temp read=6073 written=6088
+              ->  Partial GroupAggregate  (cost=42046.07..46306.54 rows=157130 width=105) (actual time=44.763..87.730 rows=161725.33 loops=3)
+                    Group Key: sha256
+                    Buffers: shared hit=638 read=8532, temp read=6073 written=6088
+                    ->  Sort  (cost=42046.07..42620.16 rows=229634 width=73) (actual time=44.752..58.415 rows=183707.00 loops=3)
+                          Sort Key: sha256
+                          Sort Method: external merge  Disk: 17696kB
+                          Buffers: shared hit=638 read=8532, temp read=6073 written=6088
+                          Worker 0:  Sort Method: external merge  Disk: 15424kB
+                          Worker 1:  Sort Method: external merge  Disk: 15464kB
+                          ->  Parallel Seq Scan on media  (cost=0.00..11392.34 rows=229634 width=73) (actual time=0.043..7.687 rows=183707.00 loops=3)
+                                Buffers: shared hit=564 read=8532
+Planning:
+  Buffers: shared hit=149
+Planning Time: 0.239 ms
+Execution Time: 212.224 ms
+=== R24 run 4 ===
+Sort  (cost=104113.19..104244.13 rows=52377 width=105) (actual time=201.678..204.519 rows=48.00 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 30kB
+  Buffers: shared hit=923 read=8250, temp read=6073 written=6088
+  ->  Finalize GroupAggregate  (cost=43046.09..96962.71 rows=52377 width=105) (actual time=48.367..204.497 rows=48.00 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Rows Removed by Filter: 485032
+        Buffers: shared hit=920 read=8250, temp read=6073 written=6088
+        ->  Gather Merge  (cost=43046.09..90834.64 rows=377112 width=105) (actual time=46.522..124.797 rows=485176.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=920 read=8250, temp read=6073 written=6088
+              ->  Partial GroupAggregate  (cost=42046.07..46306.54 rows=157130 width=105) (actual time=43.733..83.666 rows=161725.33 loops=3)
+                    Group Key: sha256
+                    Buffers: shared hit=920 read=8250, temp read=6073 written=6088
+                    ->  Sort  (cost=42046.07..42620.16 rows=229634 width=73) (actual time=43.724..56.690 rows=183707.00 loops=3)
+                          Sort Key: sha256
+                          Sort Method: external merge  Disk: 17800kB
+                          Buffers: shared hit=920 read=8250, temp read=6073 written=6088
+                          Worker 0:  Sort Method: external merge  Disk: 15488kB
+                          Worker 1:  Sort Method: external merge  Disk: 15296kB
+                          ->  Parallel Seq Scan on media  (cost=0.00..11392.34 rows=229634 width=73) (actual time=0.034..7.431 rows=183707.00 loops=3)
+                                Buffers: shared hit=846 read=8250
+Planning:
+  Buffers: shared hit=149
+Planning Time: 0.244 ms
+Execution Time: 204.988 ms
+=== R24 run 5 ===
+Sort  (cost=104113.19..104244.13 rows=52377 width=105) (actual time=216.503..219.973 rows=48.00 loops=1)
+  Sort Key: (count(*)) DESC
+  Sort Method: quicksort  Memory: 30kB
+  Buffers: shared hit=1205 read=7968, temp read=6073 written=6089
+  ->  Finalize GroupAggregate  (cost=43046.09..96962.71 rows=52377 width=105) (actual time=52.132..219.953 rows=48.00 loops=1)
+        Group Key: sha256
+        Filter: (count(*) > 1)
+        Rows Removed by Filter: 485032
+        Buffers: shared hit=1202 read=7968, temp read=6073 written=6089
+        ->  Gather Merge  (cost=43046.09..90834.64 rows=377112 width=105) (actual time=50.250..134.323 rows=485176.00 loops=1)
+              Workers Planned: 2
+              Workers Launched: 2
+              Buffers: shared hit=1202 read=7968, temp read=6073 written=6089
+              ->  Partial GroupAggregate  (cost=42046.07..46306.54 rows=157130 width=105) (actual time=47.300..91.552 rows=161725.33 loops=3)
+                    Group Key: sha256
+                    Buffers: shared hit=1202 read=7968, temp read=6073 written=6089
+                    ->  Sort  (cost=42046.07..42620.16 rows=229634 width=73) (actual time=47.289..62.069 rows=183707.00 loops=3)
+                          Sort Key: sha256
+                          Sort Method: external merge  Disk: 17936kB
+                          Buffers: shared hit=1202 read=7968, temp read=6073 written=6089
+                          Worker 0:  Sort Method: external merge  Disk: 14968kB
+                          Worker 1:  Sort Method: external merge  Disk: 15680kB
+                          ->  Parallel Seq Scan on media  (cost=0.00..11392.34 rows=229634 width=73) (actual time=0.054..8.211 rows=183707.00 loops=3)
+                                Buffers: shared hit=1128 read=7968
+Planning:
+  Buffers: shared hit=149
+Planning Time: 0.297 ms
+Execution Time: 220.453 ms

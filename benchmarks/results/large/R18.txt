@@ -1,0 +1,195 @@
+=== R18 run 1 ===
+Gather Merge  (cost=47745.93..54458.01 rows=57631 width=24) (actual time=134.964..144.818 rows=122566.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=3370 read=22110, temp read=4343 written=4408
+  ->  Sort  (cost=46745.90..46805.94 rows=24013 width=24) (actual time=133.152..134.418 rows=40855.33 loops=3)
+        Sort Key: u.last_seen_at
+        Sort Method: quicksort  Memory: 2949kB
+        Buffers: shared hit=3370 read=22110, temp read=4343 written=4408
+        Worker 0:  Sort Method: quicksort  Memory: 3307kB
+        Worker 1:  Sort Method: quicksort  Memory: 3283kB
+        ->  Parallel Hash Semi Join  (cost=34601.33..44998.78 rows=24013 width=24) (actual time=113.552..128.830 rows=40855.33 loops=3)
+              Hash Cond: (u.user_id = cm.user_id)
+              Buffers: shared hit=3354 read=22110, temp read=4343 written=4408
+              ->  Parallel Seq Scan on users u  (cost=0.00..9981.00 rows=56877 width=24) (actual time=0.072..9.907 rows=45258.67 loops=3)
+                    Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+                    Rows Removed by Filter: 154741
+                    Buffers: shared hit=5 read=6851
+              ->  Parallel Hash  (cost=33281.98..33281.98 rows=105548 width=4) (actual time=94.101..94.103 rows=388004.33 loops=3)
+                    Buckets: 262144 (originally 262144)  Batches: 8 (originally 1)  Memory Usage: 7840kB
+                    Buffers: shared hit=3349 read=15259, temp written=3028
+                    ->  Parallel Hash Join  (cost=6874.90..33281.98 rows=105548 width=4) (actual time=25.399..62.818 rows=388004.33 loops=3)
+                          Hash Cond: (cm.chat_id = c.chat_id)
+                          Buffers: shared hit=3349 read=15259
+                          ->  Parallel Seq Scan on chat_members cm  (cost=0.00..24260.39 rows=817776 width=8) (actual time=0.049..23.889 rows=654671.00 loops=3)
+                                Filter: (left_at IS NULL)
+                                Rows Removed by Filter: 42000
+                                Buffers: shared hit=293 read=15259
+                          ->  Parallel Hash  (cost=6438.35..6438.35 rows=34924 width=4) (actual time=5.646..5.646 rows=20000.00 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2912kB
+                                Buffers: shared hit=3056
+                                ->  Parallel Seq Scan on chats c  (cost=0.00..6438.35 rows=34924 width=4) (actual time=3.671..4.559 rows=20000.00 loops=3)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 133333
+                                      Buffers: shared hit=3056
+Planning:
+  Buffers: shared hit=304
+Planning Time: 0.670 ms
+Execution Time: 147.455 ms
+=== R18 run 2 ===
+Gather Merge  (cost=47745.93..54458.01 rows=57631 width=24) (actual time=129.973..139.161 rows=122566.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=3934 read=21546, temp read=4345 written=4396
+  ->  Sort  (cost=46745.90..46805.94 rows=24013 width=24) (actual time=128.396..129.477 rows=40855.33 loops=3)
+        Sort Key: u.last_seen_at
+        Sort Method: quicksort  Memory: 3262kB
+        Buffers: shared hit=3934 read=21546, temp read=4345 written=4396
+        Worker 0:  Sort Method: quicksort  Memory: 2966kB
+        Worker 1:  Sort Method: quicksort  Memory: 3310kB
+        ->  Parallel Hash Semi Join  (cost=34601.33..44998.78 rows=24013 width=24) (actual time=110.328..124.140 rows=40855.33 loops=3)
+              Hash Cond: (u.user_id = cm.user_id)
+              Buffers: shared hit=3918 read=21546, temp read=4345 written=4396
+              ->  Parallel Seq Scan on users u  (cost=0.00..9981.00 rows=56877 width=24) (actual time=0.046..8.752 rows=45258.67 loops=3)
+                    Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+                    Rows Removed by Filter: 154741
+                    Buffers: shared hit=287 read=6569
+              ->  Parallel Hash  (cost=33281.98..33281.98 rows=105548 width=4) (actual time=92.649..92.651 rows=388004.33 loops=3)
+                    Buckets: 262144 (originally 262144)  Batches: 8 (originally 1)  Memory Usage: 7808kB
+                    Buffers: shared hit=3631 read=14977, temp written=3008
+                    ->  Parallel Hash Join  (cost=6874.90..33281.98 rows=105548 width=4) (actual time=23.926..61.462 rows=388004.33 loops=3)
+                          Hash Cond: (cm.chat_id = c.chat_id)
+                          Buffers: shared hit=3631 read=14977
+                          ->  Parallel Seq Scan on chat_members cm  (cost=0.00..24260.39 rows=817776 width=8) (actual time=0.054..23.764 rows=654671.00 loops=3)
+                                Filter: (left_at IS NULL)
+                                Rows Removed by Filter: 42000
+                                Buffers: shared hit=575 read=14977
+                          ->  Parallel Hash  (cost=6438.35..6438.35 rows=34924 width=4) (actual time=4.958..4.958 rows=20000.00 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2880kB
+                                Buffers: shared hit=3056
+                                ->  Parallel Seq Scan on chats c  (cost=0.00..6438.35 rows=34924 width=4) (actual time=3.205..3.990 rows=20000.00 loops=3)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 133333
+                                      Buffers: shared hit=3056
+Planning:
+  Buffers: shared hit=304
+Planning Time: 0.584 ms
+Execution Time: 141.617 ms
+=== R18 run 3 ===
+Gather Merge  (cost=47745.93..54458.01 rows=57631 width=24) (actual time=129.987..139.435 rows=122566.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=4498 read=20982, temp read=4341 written=4408
+  ->  Sort  (cost=46745.90..46805.94 rows=24013 width=24) (actual time=128.390..129.478 rows=40855.33 loops=3)
+        Sort Key: u.last_seen_at
+        Sort Method: quicksort  Memory: 3297kB
+        Buffers: shared hit=4498 read=20982, temp read=4341 written=4408
+        Worker 0:  Sort Method: quicksort  Memory: 2970kB
+        Worker 1:  Sort Method: quicksort  Memory: 3271kB
+        ->  Parallel Hash Semi Join  (cost=34601.33..44998.78 rows=24013 width=24) (actual time=110.613..124.063 rows=40855.33 loops=3)
+              Hash Cond: (u.user_id = cm.user_id)
+              Buffers: shared hit=4482 read=20982, temp read=4341 written=4408
+              ->  Parallel Seq Scan on users u  (cost=0.00..9981.00 rows=56877 width=24) (actual time=0.063..8.789 rows=45258.67 loops=3)
+                    Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+                    Rows Removed by Filter: 154741
+                    Buffers: shared hit=569 read=6287
+              ->  Parallel Hash  (cost=33281.98..33281.98 rows=105548 width=4) (actual time=93.232..93.233 rows=388004.33 loops=3)
+                    Buckets: 262144 (originally 262144)  Batches: 8 (originally 1)  Memory Usage: 7840kB
+                    Buffers: shared hit=3913 read=14695, temp written=3028
+                    ->  Parallel Hash Join  (cost=6874.90..33281.98 rows=105548 width=4) (actual time=24.629..62.115 rows=388004.33 loops=3)
+                          Hash Cond: (cm.chat_id = c.chat_id)
+                          Buffers: shared hit=3913 read=14695
+                          ->  Parallel Seq Scan on chat_members cm  (cost=0.00..24260.39 rows=817776 width=8) (actual time=0.045..23.697 rows=654671.00 loops=3)
+                                Filter: (left_at IS NULL)
+                                Rows Removed by Filter: 42000
+                                Buffers: shared hit=857 read=14695
+                          ->  Parallel Hash  (cost=6438.35..6438.35 rows=34924 width=4) (actual time=5.289..5.289 rows=20000.00 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2912kB
+                                Buffers: shared hit=3056
+                                ->  Parallel Seq Scan on chats c  (cost=0.00..6438.35 rows=34924 width=4) (actual time=3.521..4.349 rows=20000.00 loops=3)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 133333
+                                      Buffers: shared hit=3056
+Planning:
+  Buffers: shared hit=304
+Planning Time: 0.637 ms
+Execution Time: 141.922 ms
+=== R18 run 4 ===
+Gather Merge  (cost=47745.93..54458.01 rows=57631 width=24) (actual time=132.748..141.613 rows=122566.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=5062 read=20418, temp read=4343 written=4404
+  ->  Sort  (cost=46745.90..46805.94 rows=24013 width=24) (actual time=131.115..132.207 rows=40855.33 loops=3)
+        Sort Key: u.last_seen_at
+        Sort Method: quicksort  Memory: 3291kB
+        Buffers: shared hit=5062 read=20418, temp read=4343 written=4404
+        Worker 0:  Sort Method: quicksort  Memory: 3291kB
+        Worker 1:  Sort Method: quicksort  Memory: 2957kB
+        ->  Parallel Hash Semi Join  (cost=34601.33..44998.78 rows=24013 width=24) (actual time=113.606..126.812 rows=40855.33 loops=3)
+              Hash Cond: (u.user_id = cm.user_id)
+              Buffers: shared hit=5046 read=20418, temp read=4343 written=4404
+              ->  Parallel Seq Scan on users u  (cost=0.00..9981.00 rows=56877 width=24) (actual time=0.070..8.943 rows=45258.67 loops=3)
+                    Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+                    Rows Removed by Filter: 154741
+                    Buffers: shared hit=851 read=6005
+              ->  Parallel Hash  (cost=33281.98..33281.98 rows=105548 width=4) (actual time=96.348..96.349 rows=388004.33 loops=3)
+                    Buckets: 262144 (originally 262144)  Batches: 8 (originally 1)  Memory Usage: 7840kB
+                    Buffers: shared hit=4195 read=14413, temp written=3024
+                    ->  Parallel Hash Join  (cost=6874.90..33281.98 rows=105548 width=4) (actual time=26.795..64.562 rows=388004.33 loops=3)
+                          Hash Cond: (cm.chat_id = c.chat_id)
+                          Buffers: shared hit=4195 read=14413
+                          ->  Parallel Seq Scan on chat_members cm  (cost=0.00..24260.39 rows=817776 width=8) (actual time=0.079..24.474 rows=654671.00 loops=3)
+                                Filter: (left_at IS NULL)
+                                Rows Removed by Filter: 42000
+                                Buffers: shared hit=1139 read=14413
+                          ->  Parallel Hash  (cost=6438.35..6438.35 rows=34924 width=4) (actual time=5.928..5.928 rows=20000.00 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2880kB
+                                Buffers: shared hit=3056
+                                ->  Parallel Seq Scan on chats c  (cost=0.00..6438.35 rows=34924 width=4) (actual time=4.018..4.894 rows=20000.00 loops=3)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 133333
+                                      Buffers: shared hit=3056
+Planning:
+  Buffers: shared hit=304
+Planning Time: 0.642 ms
+Execution Time: 144.120 ms
+=== R18 run 5 ===
+Gather Merge  (cost=47745.93..54458.01 rows=57631 width=24) (actual time=127.993..137.122 rows=122566.00 loops=1)
+  Workers Planned: 2
+  Workers Launched: 2
+  Buffers: shared hit=5626 read=19854 written=480, temp read=4343 written=4404
+  ->  Sort  (cost=46745.90..46805.94 rows=24013 width=24) (actual time=126.322..127.424 rows=40855.33 loops=3)
+        Sort Key: u.last_seen_at
+        Sort Method: quicksort  Memory: 2953kB
+        Buffers: shared hit=5626 read=19854 written=480, temp read=4343 written=4404
+        Worker 0:  Sort Method: quicksort  Memory: 3292kB
+        Worker 1:  Sort Method: quicksort  Memory: 3293kB
+        ->  Parallel Hash Semi Join  (cost=34601.33..44998.78 rows=24013 width=24) (actual time=108.891..122.122 rows=40855.33 loops=3)
+              Hash Cond: (u.user_id = cm.user_id)
+              Buffers: shared hit=5610 read=19854 written=480, temp read=4343 written=4404
+              ->  Parallel Seq Scan on users u  (cost=0.00..9981.00 rows=56877 width=24) (actual time=0.064..9.234 rows=45258.67 loops=3)
+                    Filter: (last_seen_at < '2026-04-01 00:00:00+05:30'::timestamp with time zone)
+                    Rows Removed by Filter: 154741
+                    Buffers: shared hit=1133 read=5723 written=235
+              ->  Parallel Hash  (cost=33281.98..33281.98 rows=105548 width=4) (actual time=91.431..91.443 rows=388004.33 loops=3)
+                    Buckets: 262144 (originally 262144)  Batches: 8 (originally 1)  Memory Usage: 7840kB
+                    Buffers: shared hit=4477 read=14131 written=245, temp written=3028
+                    ->  Parallel Hash Join  (cost=6874.90..33281.98 rows=105548 width=4) (actual time=25.057..62.252 rows=388004.33 loops=3)
+                          Hash Cond: (cm.chat_id = c.chat_id)
+                          Buffers: shared hit=4477 read=14131 written=245
+                          ->  Parallel Seq Scan on chat_members cm  (cost=0.00..24260.39 rows=817776 width=8) (actual time=0.045..23.881 rows=654671.00 loops=3)
+                                Filter: (left_at IS NULL)
+                                Rows Removed by Filter: 42000
+                                Buffers: shared hit=1421 read=14131 written=245
+                          ->  Parallel Hash  (cost=6438.35..6438.35 rows=34924 width=4) (actual time=5.228..5.228 rows=20000.00 loops=3)
+                                Buckets: 65536  Batches: 1  Memory Usage: 2912kB
+                                Buffers: shared hit=3056
+                                ->  Parallel Seq Scan on chats c  (cost=0.00..6438.35 rows=34924 width=4) (actual time=3.472..4.285 rows=20000.00 loops=3)
+                                      Filter: (chat_type = 'GROUP'::chat_type)
+                                      Rows Removed by Filter: 133333
+                                      Buffers: shared hit=3056
+Planning:
+  Buffers: shared hit=304
+Planning Time: 0.649 ms
+Execution Time: 139.729 ms

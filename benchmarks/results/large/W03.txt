@@ -1,0 +1,55 @@
+=== W03 run 1 ===
+Update on messages  (cost=0.43..8.45 rows=0 width=0) (actual time=2.579..2.580 rows=0.00 loops=1)
+  Buffers: shared hit=46 read=7 dirtied=6
+  ->  Index Scan using messages_pkey on messages  (cost=0.43..8.45 rows=1 width=43) (actual time=0.019..0.022 rows=1.00 loops=1)
+        Index Cond: (message_id = 119989)
+        Index Searches: 1
+        Buffers: shared hit=4
+Planning:
+  Buffers: shared hit=211
+Planning Time: 1.842 ms
+Execution Time: 2.896 ms
+=== W03 run 2 ===
+Update on messages  (cost=0.43..8.45 rows=0 width=0) (actual time=3.213..3.213 rows=0.00 loops=1)
+  Buffers: shared hit=54 read=1 dirtied=1
+  ->  Index Scan using messages_pkey on messages  (cost=0.43..8.45 rows=1 width=43) (actual time=0.042..0.051 rows=1.00 loops=1)
+        Index Cond: (message_id = 119989)
+        Index Searches: 1
+        Buffers: shared hit=6
+Planning:
+  Buffers: shared hit=211
+Planning Time: 2.015 ms
+Execution Time: 3.476 ms
+=== W03 run 3 ===
+Update on messages  (cost=0.43..8.45 rows=0 width=0) (actual time=1.666..1.667 rows=0.00 loops=1)
+  Buffers: shared hit=54 read=1 dirtied=1
+  ->  Index Scan using messages_pkey on messages  (cost=0.43..8.45 rows=1 width=43) (actual time=0.027..0.033 rows=1.00 loops=1)
+        Index Cond: (message_id = 119989)
+        Index Searches: 1
+        Buffers: shared hit=6
+Planning:
+  Buffers: shared hit=211
+Planning Time: 1.671 ms
+Execution Time: 1.824 ms
+=== W03 run 4 ===
+Update on messages  (cost=0.43..8.45 rows=0 width=0) (actual time=1.459..1.460 rows=0.00 loops=1)
+  Buffers: shared hit=54 read=1 dirtied=1
+  ->  Index Scan using messages_pkey on messages  (cost=0.43..8.45 rows=1 width=43) (actual time=0.019..0.024 rows=1.00 loops=1)
+        Index Cond: (message_id = 119989)
+        Index Searches: 1
+        Buffers: shared hit=6
+Planning:
+  Buffers: shared hit=211
+Planning Time: 0.759 ms
+Execution Time: 1.554 ms
+=== W03 run 5 ===
+Update on messages  (cost=0.43..8.45 rows=0 width=0) (actual time=2.891..2.892 rows=0.00 loops=1)
+  Buffers: shared hit=54 read=1 dirtied=1
+  ->  Index Scan using messages_pkey on messages  (cost=0.43..8.45 rows=1 width=43) (actual time=0.056..0.064 rows=1.00 loops=1)
+        Index Cond: (message_id = 119989)
+        Index Searches: 1
+        Buffers: shared hit=6
+Planning:
+  Buffers: shared hit=211
+Planning Time: 1.710 ms
+Execution Time: 3.134 ms

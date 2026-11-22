@@ -1,0 +1,75 @@
+=== R13 run 1 ===
+Nested Loop Anti Join  (cost=0.85..47.27 rows=4 width=36) (actual time=0.018..0.019 rows=0.00 loops=1)
+  Buffers: shared read=3
+  ->  Index Scan using idx_messages_chat_questions on messages m  (cost=0.42..20.49 rows=4 width=36) (actual time=0.018..0.018 rows=0.00 loops=1)
+        Index Cond: (chat_id = 20501)
+        Index Searches: 1
+        Buffers: shared read=3
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.42..5.44 rows=1 width=4) (never executed)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Index Searches: 0
+Planning:
+  Buffers: shared hit=344
+Planning Time: 1.004 ms
+Execution Time: 0.045 ms
+=== R13 run 2 ===
+Nested Loop Anti Join  (cost=0.85..47.27 rows=4 width=36) (actual time=0.006..0.006 rows=0.00 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan using idx_messages_chat_questions on messages m  (cost=0.42..20.49 rows=4 width=36) (actual time=0.006..0.006 rows=0.00 loops=1)
+        Index Cond: (chat_id = 20501)
+        Index Searches: 1
+        Buffers: shared hit=3
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.42..5.44 rows=1 width=4) (never executed)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Index Searches: 0
+Planning:
+  Buffers: shared hit=344
+Planning Time: 1.088 ms
+Execution Time: 0.033 ms
+=== R13 run 3 ===
+Nested Loop Anti Join  (cost=0.85..47.27 rows=4 width=36) (actual time=0.006..0.006 rows=0.00 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan using idx_messages_chat_questions on messages m  (cost=0.42..20.49 rows=4 width=36) (actual time=0.006..0.006 rows=0.00 loops=1)
+        Index Cond: (chat_id = 20501)
+        Index Searches: 1
+        Buffers: shared hit=3
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.42..5.44 rows=1 width=4) (never executed)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Index Searches: 0
+Planning:
+  Buffers: shared hit=344
+Planning Time: 1.069 ms
+Execution Time: 0.035 ms
+=== R13 run 4 ===
+Nested Loop Anti Join  (cost=0.85..47.27 rows=4 width=36) (actual time=0.007..0.007 rows=0.00 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan using idx_messages_chat_questions on messages m  (cost=0.42..20.49 rows=4 width=36) (actual time=0.006..0.006 rows=0.00 loops=1)
+        Index Cond: (chat_id = 20501)
+        Index Searches: 1
+        Buffers: shared hit=3
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.42..5.44 rows=1 width=4) (never executed)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Index Searches: 0
+Planning:
+  Buffers: shared hit=344
+Planning Time: 1.238 ms
+Execution Time: 0.042 ms
+=== R13 run 5 ===
+Nested Loop Anti Join  (cost=0.85..47.27 rows=4 width=36) (actual time=0.005..0.005 rows=0.00 loops=1)
+  Buffers: shared hit=3
+  ->  Index Scan using idx_messages_chat_questions on messages m  (cost=0.42..20.49 rows=4 width=36) (actual time=0.005..0.005 rows=0.00 loops=1)
+        Index Cond: (chat_id = 20501)
+        Index Searches: 1
+        Buffers: shared hit=3
+  ->  Index Only Scan using idx_messages_reply_to on messages r  (cost=0.42..5.44 rows=1 width=4) (never executed)
+        Index Cond: (reply_to_message_id = m.message_id)
+        Heap Fetches: 0
+        Index Searches: 0
+Planning:
+  Buffers: shared hit=344
+Planning Time: 0.870 ms
+Execution Time: 0.028 ms
